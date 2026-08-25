@@ -1,0 +1,1024 @@
+/* admin_style.css - Admin Portal Design System & Styles */
+
+/* 1. Reset and Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@500;600;700&display=swap');
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    /* Color Palette - Color Hunt: e8f5e9 (Light Green), a5d6a7 (Soft Green), 66bb6a (Medium Green), 1b5e20 (Dark Green) */
+    --clr-primary: #1b5e20;
+    /* Dark Forest Green */
+    --clr-primary-hover: #123e15;
+    --clr-secondary: #66bb6a;
+    /* Medium Green */
+    --clr-secondary-hover: #57a05a;
+    --clr-accent-gradient: linear-gradient(135deg, #1b5e20 0%, #66bb6a 100%);
+    --clr-accent-gradient-hover: linear-gradient(135deg, #123e15 0%, #57a05a 100%);
+
+    --clr-bg: #e8f5e9;
+    /* Very Light Mint Green */
+    --clr-dashboard-bg: #e8f5e9;
+    --clr-card-bg: #ffffff;
+
+    --clr-text-main: #0a240c;
+    /* Deep Forest Green Slate */
+    --clr-text-muted: #1b5e20;
+    /* Muted Forest Green */
+    --clr-text-light: #66bb6a;
+    /* Light Green */
+
+    --clr-border: #a5d6a7;
+    /* Soft Pastel Green Border */
+    --clr-border-focus: #1b5e20;
+
+    /* Layout & Shadows */
+    --radius-lg: 16px;
+    /* Rounded rectangular */
+    --radius-md: 10px;
+    --radius-sm: 6px;
+
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    /* Soft shadow using themed colors */
+    --shadow-card: 0 10px 25px -5px rgba(143, 162, 138, 0.08), 0 8px 10px -6px rgba(200, 169, 107, 0.08);
+    --shadow-card-hover: 0 20px 35px -10px rgba(143, 162, 138, 0.15), 0 12px 15px -8px rgba(200, 169, 107, 0.15);
+
+    /* Transitions */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* 2. Global Body & Background */
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--clr-bg);
+    color: var(--clr-text-main);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 3. Navigation Header for Admin Dashboard */
+.nav-header {
+    background-color: #ffffff;
+    border-bottom: 1px solid var(--clr-border);
+    padding: 18px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.brand-logo {
+    width: 44px;
+    height: 44px;
+    background: #ffffff !important;
+    border-radius: 50% !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--clr-border) !important;
+    box-shadow: 0 3px 6px rgba(27, 94, 32, 0.15) !important;
+    overflow: hidden;
+}
+
+.brand-logo img {
+    width: 85% !important;
+    height: 85% !important;
+    object-fit: contain !important;
+    border-radius: 50% !important;
+}
+
+.brand-name {
+    font-family: 'Outfit', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--clr-text-main);
+    letter-spacing: -0.5px;
+}
+
+.admin-profile {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.admin-badge {
+    background: var(--clr-accent-gradient);
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+}
+
+.btn-logout {
+    height: 36px;
+    padding: 0 14px;
+    border-radius: 8px;
+    border: 1.5px solid var(--clr-border);
+    background-color: transparent;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--clr-text-muted);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: var(--transition-smooth);
+}
+
+.btn-logout:hover {
+    color: #ef4444;
+    border-color: #fca5a5;
+    background-color: #fee2e2;
+}
+
+/* 4. Login Card Styling */
+.login-wrapper {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background-color: #f8fafc;
+    /* light contrast for white login card */
+}
+
+.login-card {
+    background-color: var(--clr-card-bg);
+    border-radius: var(--radius-lg);
+    padding: 40px;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: var(--shadow-card);
+    border: 1px solid var(--clr-border);
+    transition: var(--transition-smooth);
+}
+
+.login-card:hover {
+    box-shadow: var(--shadow-card-hover);
+}
+
+.login-card-header {
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.login-card-header h1 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--clr-text-main);
+    margin-top: 16px;
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+}
+
+.login-card-header p {
+    font-size: 14px;
+    color: var(--clr-text-muted);
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--clr-text-main);
+    margin-bottom: 8px;
+}
+
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-icon-left {
+    position: absolute;
+    left: 14px;
+    color: var(--clr-text-light);
+    pointer-events: none;
+    transition: var(--transition-smooth);
+}
+
+.form-input {
+    width: 100%;
+    height: 46px;
+    padding: 0 16px 0 42px;
+    border-radius: var(--radius-md);
+    border: 1.5px solid var(--clr-border);
+    background-color: #ffffff;
+    color: var(--clr-text-main);
+    font-family: inherit;
+    font-size: 14px;
+    outline: none;
+    transition: var(--transition-smooth);
+}
+
+.form-input:focus {
+    border-color: var(--clr-primary);
+    box-shadow: 0 0 0 4px rgba(143, 162, 138, 0.12);
+}
+
+.input-wrapper:focus-within .input-icon-left {
+    color: var(--clr-primary);
+}
+
+.btn-submit {
+    width: 100%;
+    height: 46px;
+    background: var(--clr-accent-gradient);
+    border: none;
+    border-radius: var(--radius-md);
+    color: #ffffff;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(143, 162, 138, 0.2);
+    transition: var(--transition-bounce);
+}
+
+.btn-submit:hover {
+    background: var(--clr-accent-gradient-hover);
+    transform: translateY(-1.5px);
+    box-shadow: 0 6px 15px rgba(143, 162, 138, 0.3);
+}
+
+.btn-submit:active {
+    transform: translateY(0.5px);
+}
+
+.btn-submit:focus-visible {
+    outline: 3px solid rgba(200, 169, 107, 0.3);
+}
+
+.form-input.is-invalid {
+    border-color: #ef4444;
+}
+
+.form-input.is-invalid:focus {
+    box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.15);
+}
+
+.error-message {
+    color: #ef4444;
+    font-size: 12px;
+    margin-top: 4px;
+    display: none;
+    align-items: center;
+    gap: 4px;
+}
+
+.is-invalid+.error-message {
+    display: flex;
+}
+
+/* 5. Dashboard Grid Container */
+.dashboard-container {
+    flex: 1;
+    max-width: 1050px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 60px 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.dashboard-header {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.dashboard-header h2 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--clr-text-main);
+    margin-bottom: 12px;
+    letter-spacing: -0.5px;
+}
+
+.dashboard-header p {
+    font-size: 15px;
+    color: var(--clr-text-muted);
+}
+
+/* Subject Grid - 3 cards in one row */
+.admin-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    width: 100%;
+}
+
+/* Admin Dashboard Subject Cards */
+.admin-card {
+    background-color: var(--clr-card-bg);
+    border-radius: var(--radius-lg);
+    padding: 40px 24px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: var(--shadow-card);
+    border: 1px solid var(--clr-border);
+    cursor: pointer;
+    transition: var(--transition-bounce);
+}
+
+.admin-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-card-hover);
+    border-color: var(--clr-primary);
+}
+
+.card-icon {
+    width: 68px;
+    height: 68px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 24px;
+    background-color: rgba(143, 162, 138, 0.08);
+    color: var(--clr-primary);
+    transition: var(--transition-bounce);
+}
+
+.admin-card:hover .card-icon {
+    color: #ffffff;
+    transform: scale(1.08);
+}
+
+.card-icon svg {
+    width: 30px;
+    height: 30px;
+}
+
+.card-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--clr-text-main);
+    margin-bottom: 10px;
+}
+
+.card-desc {
+    font-size: 13.5px;
+    color: var(--clr-text-muted);
+    margin-bottom: 28px;
+    line-height: 1.4;
+}
+
+.btn-manage {
+    width: 100%;
+    height: 42px;
+    background-color: transparent;
+    border: 1.5px solid var(--clr-primary);
+    border-radius: var(--radius-md);
+    color: var(--clr-primary);
+    font-family: inherit;
+    font-size: 13.5px;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: var(--transition-smooth);
+}
+
+.btn-manage svg {
+    width: 16px;
+    height: 16px;
+}
+
+.btn-manage:hover {
+    background-color: var(--clr-primary);
+    color: #ffffff;
+    box-shadow: 0 4px 10px rgba(143, 162, 138, 0.15);
+}
+
+/* Subject Card Overrides - English (Blue) & Maths (Gold) */
+
+/* 1. English Card (Blue) */
+.card-english .card-icon {
+    background-color: rgba(37, 99, 235, 0.08);
+    color: #2563eb;
+}
+
+.admin-card.card-english:hover {
+    border-color: #2563eb;
+}
+
+.admin-card.card-english:hover .card-icon {
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+}
+
+.card-english .btn-manage {
+    border-color: #2563eb;
+    color: #2563eb;
+}
+
+.card-english .btn-manage:hover {
+    background-color: #2563eb;
+    color: #ffffff;
+    box-shadow: 0 4px 10px rgba(37, 99, 235, 0.15);
+}
+
+.card-english .sheet-url-input:focus {
+    border-color: #2563eb !important;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1) !important;
+}
+
+/* 2. Maths Card (Gold) */
+.card-maths .card-icon {
+    background-color: rgba(200, 169, 107, 0.08);
+    color: var(--clr-secondary);
+}
+
+.admin-card.card-maths:hover {
+    border-color: var(--clr-secondary);
+}
+
+.admin-card.card-maths:hover .card-icon {
+    background: linear-gradient(135deg, #c8a96b 0%, #d9ab55 100%);
+}
+
+.card-maths .btn-manage {
+    border-color: var(--clr-secondary);
+    color: var(--clr-secondary);
+}
+
+.card-maths .btn-manage:hover {
+    background-color: var(--clr-secondary);
+    color: #ffffff;
+    box-shadow: 0 4px 10px rgba(200, 169, 107, 0.15);
+}
+
+.card-maths .sheet-url-input:focus {
+    border-color: var(--clr-secondary) !important;
+    box-shadow: 0 0 0 3px rgba(200, 169, 107, 0.1) !important;
+}
+
+/* Google Sheets URL text input overrides */
+.sheet-url-input {
+    border-radius: var(--radius-sm) !important;
+    font-size: 13px !important;
+    text-align: center;
+    border-color: var(--clr-border) !important;
+    padding: 0 12px !important;
+    transition: var(--transition-smooth);
+}
+
+.sheet-url-input:focus {
+    background-color: #ffffff;
+}
+
+/* Success Toast Notification */
+.success-notification {
+    position: fixed;
+    top: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-100px);
+    background-color: #10b981;
+    color: white;
+    padding: 12px 24px;
+    border-radius: var(--radius-md);
+    box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.3);
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    z-index: 100;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.success-notification.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+}
+
+.success-notification svg {
+    width: 20px;
+    height: 20px;
+}
+
+/* Responsive Layout */
+@media (max-width: 768px) {
+    .nav-header {
+        padding: 18px 20px;
+    }
+
+    .dashboard-container {
+        padding: 40px 16px;
+    }
+
+    .dashboard-header h2 {
+        font-size: 26px;
+    }
+
+    .admin-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        max-width: 380px;
+        margin: 0 auto;
+    }
+
+    .admin-card {
+        padding: 32px 20px;
+    }
+}
+
+/* 6. Inline Google Sheets Viewer */
+.sheet-viewer-container {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+    margin-top: 20px;
+    background-color: var(--clr-card-bg);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--clr-border);
+    box-shadow: var(--shadow-card);
+    overflow: hidden;
+    animation: slideUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.viewer-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 24px;
+    background-color: #ffffff;
+    border-bottom: 1px solid var(--clr-border);
+}
+
+.viewer-title-area {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.viewer-back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: none;
+    border: none;
+    color: var(--clr-text-muted);
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 6px 12px;
+    border-radius: var(--radius-sm);
+    transition: var(--transition-smooth);
+}
+
+.viewer-back-btn:hover {
+    color: var(--clr-text-main);
+    background-color: rgba(143, 162, 138, 0.08);
+}
+
+.viewer-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--clr-text-main);
+}
+
+.viewer-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.btn-control {
+    height: 36px;
+    padding: 0 12px;
+    border-radius: var(--radius-md);
+    border: 1.5px solid var(--clr-border);
+    background-color: transparent;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--clr-text-muted);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+    transition: var(--transition-smooth);
+}
+
+.btn-control:hover {
+    color: var(--clr-primary);
+    border-color: var(--clr-primary);
+    background-color: rgba(143, 162, 138, 0.04);
+}
+
+.sheet-iframe-wrapper {
+    position: relative;
+    width: 100%;
+    height: 600px;
+    background-color: #ffffff;
+}
+
+.sheet-iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 5. Statistics Cards */
+.stats-overview {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
+    margin-bottom: 28px;
+    width: 100%;
+}
+
+.stats-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background-color: var(--clr-card-bg);
+    padding: 20px 24px;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+    transition: var(--transition-smooth);
+    border: 2px solid var(--clr-border);
+    position: relative;
+    overflow: hidden;
+}
+
+.stats-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-card-hover);
+}
+
+.stats-icon-wrapper {
+    width: 52px;
+    height: 52px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    flex-shrink: 0;
+}
+
+/* Themes for stats cards */
+.stats-card.theme-teachers {
+    border-color: #c7d3c0;
+}
+
+.stats-card.theme-teachers .stats-icon-wrapper {
+    background-color: #e8f5e9;
+    color: #1b5e20;
+}
+
+.stats-card.theme-teachers .stats-number {
+    color: #1b5e20;
+}
+
+.stats-card.theme-completed {
+    border-color: #a5d6a7;
+}
+
+.stats-card.theme-completed .stats-icon-wrapper {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+}
+
+.stats-card.theme-completed .stats-number {
+    color: #2e7d32;
+}
+
+.stats-card.theme-pending {
+    border-color: #ffab91;
+}
+
+.stats-card.theme-pending .stats-icon-wrapper {
+    background-color: #fbe9e7;
+    color: #d84315;
+}
+
+.stats-card.theme-pending .stats-number {
+    color: #d84315;
+}
+
+.stats-card.theme-registered-users {
+    border-color: #c5cae9;
+}
+
+.stats-card.theme-registered-users .stats-icon-wrapper {
+    background-color: #e8eaf6;
+    color: #3f51b5;
+}
+
+.stats-card.theme-registered-users .stats-number {
+    color: #1a237e;
+}
+
+.stats-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.stats-number {
+    font-family: 'Outfit', sans-serif;
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.stats-label {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--clr-text-muted);
+}
+
+/* 6. Submissions Grid & Cards */
+.submissions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    margin-top: 32px;
+    width: 100%;
+}
+
+.subject-submissions-card {
+    background-color: var(--clr-card-bg);
+    padding: 24px;
+    border-radius: var(--radius-lg);
+    border: 2px solid var(--clr-border);
+    box-shadow: var(--shadow-card);
+    transition: var(--transition-smooth);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 250px;
+}
+
+.subject-submissions-card:hover {
+    box-shadow: var(--shadow-card-hover);
+}
+
+.subject-submissions-card h3 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    border-bottom: 1.5px solid var(--clr-border);
+    padding-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Colors matching the subject card aesthetics on admin */
+.subject-submissions-card.theme-kannada h3 {
+    color: #d97706;
+    /* Dark Amber */
+}
+
+.subject-submissions-card.theme-kannada {
+    border-color: #f59e0b;
+}
+
+.subject-submissions-card.theme-english h3 {
+    color: #2563eb;
+    /* Dark Blue */
+}
+
+.subject-submissions-card.theme-english {
+    border-color: #3b82f6;
+}
+
+.subject-submissions-card.theme-maths h3 {
+    color: #1b5e20;
+    /* Deep Forest Green */
+}
+
+.subject-submissions-card.theme-maths {
+    border-color: #66bb6a;
+}
+
+.submissions-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    flex: 1;
+}
+
+.submission-item {
+    padding: 12px;
+    border-radius: var(--radius-md);
+    background-color: var(--clr-bg);
+    border: 1px solid var(--clr-border);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.submission-teacher {
+    font-weight: 600;
+    font-size: 13px;
+    color: var(--clr-text-main);
+    word-break: break-all;
+}
+
+.submission-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11px;
+}
+
+.submission-time {
+    color: var(--clr-text-muted);
+}
+
+.submission-link {
+    color: #1b5e20;
+    font-weight: 600;
+    text-decoration: underline;
+}
+
+.submission-empty {
+    text-align: center;
+    padding: 32px 16px;
+    color: var(--clr-text-light);
+    font-style: italic;
+    font-size: 13px;
+    margin: auto 0;
+}
+
+/* Kannada Card Red & Yellow Border Override */
+.card-kannada {
+    border: 3px solid transparent !important;
+    background: linear-gradient(#ffffff, #ffffff) padding-box,
+        linear-gradient(135deg, #ffd700 50%, #dc2626 50%) border-box !important;
+}
+
+.card-kannada:hover {
+    background: linear-gradient(#ffffff, #ffffff) padding-box,
+        linear-gradient(135deg, #dc2626 50%, #ffd700 50%) border-box !important;
+}
+
+.card-kannada .card-icon {
+    background: none !important;
+    border-radius: 0 !important;
+    width: 140px !important;
+    height: 90px !important;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.admin-card.card-kannada:hover .card-icon {
+    background: none !important;
+    transform: scale(1.08) rotate(5deg) !important;
+}
+
+/* English Card Custom Logo Override */
+.card-english .card-icon {
+    background: none !important;
+    border-radius: 0 !important;
+    width: 140px !important;
+    height: 90px !important;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.admin-card.card-english:hover .card-icon {
+    background: none !important;
+    transform: scale(1.08) rotate(-5deg) !important;
+}
+
+/* Maths Card Custom Logo Override */
+.card-maths .card-icon {
+    background: none !important;
+    border-radius: 0 !important;
+    width: 140px !important;
+    height: 90px !important;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.admin-card.card-maths:hover .card-icon {
+    background: none !important;
+    transform: scale(1.08) rotate(5deg) !important;
+}
+
+/* Circular Language Toggle Button */
+.btn-lang-toggle {
+    height: 36px;
+    padding: 0 14px;
+    border-radius: 8px;
+    border: 1.5px solid var(--clr-border);
+    background-color: transparent;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--clr-text-muted);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: var(--transition-smooth);
+}
+
+.btn-lang-toggle:hover {
+    color: var(--clr-primary-hover);
+    border-color: var(--clr-primary);
+    background-color: var(--clr-bg);
+}
+
+/* Add User Button */
+.btn-add-user {
+    height: 36px;
+    padding: 0 14px;
+    border-radius: 8px;
+    border: 1.5px solid var(--clr-border);
+    background-color: transparent;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--clr-text-muted);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: var(--transition-smooth);
+}
+
+.btn-add-user:hover {
+    color: var(--clr-primary-hover);
+    border-color: var(--clr-primary);
+    background-color: var(--clr-bg);
+}
+
+/* Submissions action buttons */
+.btn-download-submissions {
+    background: none;
+    border: none;
+    color: var(--clr-text-muted);
+    cursor: pointer;
+    padding: 6px;
+    border-radius: 6px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.btn-download-submissions:hover {
+    color: var(--clr-primary);
+    background-color: var(--clr-border);
+}
+
+.btn-delete-submission:hover {
+    background-color: rgba(239, 68, 68, 0.1);
+    transform: scale(1.08);
+}

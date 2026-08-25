@@ -1,0 +1,35 @@
+{
+  "kannada": [
+    {
+      "name": "Class 5",
+      "url": "https://docs.google.com/spreadsheets/d/1caf3UmCAulSXKdqNba7zw7aq95TO2k-PUahqHe6uEPM/edit?usp=drivesdk"
+    }
+  ],
+  "english": [
+    {
+      "name": "Class 7 Updated",
+      "url": "https://docs.google.com/spreadsheets/d/1caf3UmCAulSXKdqNba7zw7aq95TO2k-PUahqHe6uEPM/edit?usp=drivesdk"
+    }
+  ],
+  "maths": [
+    {
+      "name": "Class 8",
+      "url": "https://docs.google.com/spreadsheets/d/1caf3UmCAulSXKdqNba7zw7aq95TO2k-PUahqHe6uEPM/edit?usp=drivesdk"
+    }
+  ],
+  "submissions": {},
+  "completedCount": 35,
+  "notCompletedCount": 12,
+  "users": [
+    {
+      "email": "sameergudusabnadaf@gmail.com",
+      "name": "sam",
+      "password": "sameerpass12"
+    },
+    {
+      "email": "sgnadaf04@gmail.com",
+      "name": "sameer",
+      "password": "sameerpass34"
+    }
+  ]
+}

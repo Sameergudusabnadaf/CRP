@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="CRP Subject Dashboard. Access your learning cards.">
+    <title>Subject Dashboard - CRP</title>
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+
+    <!-- Sticky Navigation Header -->
+    <header class="nav-header">
+        <div class="brand">
+            <div class="brand-logo" aria-hidden="true" style="background: none; box-shadow: none;">
+                <img src="logo.png" alt="CRP Logo" style="width: 100%; height: 100%; object-fit: cover; border-radius: inherit;">
+            </div>
+            <span class="brand-name" id="brand-name">CRP</span>
+        </div>
+        
+        <div class="user-profile">
+            <div class="student-info">
+                <div class="student-name" id="student-name">CRP Director</div>
+                <div class="student-class" id="student-class">Administrator Portal</div>
+            </div>
+            <!-- Language Toggle Button -->
+            <button type="button" class="btn-lang-toggle" id="lang-toggle-btn" aria-label="Switch Language to Kannada">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/>
+                </svg>
+                <span id="lang-btn-text">ಕನ್ನಡ</span>
+            </button>
+            <!-- Log Out Button -->
+            <button type="button" class="btn-logout" id="logout-btn" aria-label="Log out of student portal">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/>
+                </svg>
+                <span id="logout-btn-text">Log Out</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="dashboard-container">
+        
+        <!-- Welcome Hero Section -->
+        <section class="welcome-hero">
+            <h2 id="welcome-heading">Welcome Back, CRP Director!</h2>
+            <p id="welcome-sub">Select a subject below to explore study materials, classroom assignments, practice tests, and syllabus progress details.</p>
+        </section>
+
+        <!-- Horizontal Subject Grid -->
+        <section class="subject-grid" id="subject-grid">
+            <!-- Subject 1: Kannada -->
+            <a href="#" class="subject-card card-kannada" id="card-kannada" aria-label="Kannada Class card">
+                <div class="icon-box" aria-hidden="true">
+                    <img src="kannada_symbol.png" alt="Kannada Symbol" style="width: 100%; height: 100%; object-fit: contain;">
+                </div>
+                <h3 class="subject-title" id="subject-title-kannada">Kannada <span class="lang-sub">(ಕನ್ನಡ)</span></h3>
+                <p class="subject-description" id="subject-desc-kannada">ಭಾಷಾ ವ್ಯಾಕರಣ, ಪ್ರಬಂಧಗಳು ಮತ್ತು ಸಾಹಿತ್ಯ ಸಂಗ್ರಹ ಅಧ್ಯಯನ.</p>
+            </a>
+
+            <!-- Subject 2: English -->
+            <a href="#" class="subject-card card-english" id="card-english" aria-label="English Class card">
+                <div class="icon-box" aria-hidden="true">
+                    <img src="english_symbol.png" alt="English Symbol" style="width: 100%; height: 100%; object-fit: contain;">
+                </div>
+                <h3 class="subject-title" id="subject-title-english">English</h3>
+                <p class="subject-description" id="subject-desc-english">Develop grammar accuracy, essay layouts, and prose comprehensions.</p>
+            </a>
+
+            <!-- Subject 3: Maths -->
+            <a href="#" class="subject-card card-maths" id="card-maths" aria-label="Maths Class card">
+                <div class="icon-box" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 100%; height: 100%;">
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                        <line x1="9" y1="3" x2="9" y2="21" />
+                        <line x1="15" y1="3" x2="15" y2="21" />
+                        <line x1="3" y1="9" x2="21" y2="9" />
+                        <line x1="3" y1="15" x2="21" y2="15" />
+                    </svg>
+                </div>
+                <h3 class="subject-title" id="subject-title-maths">Maths</h3>
+                <p class="subject-description" id="subject-desc-maths">Solve equations, explore arithmetic grids, and study geometry.</p>
+            </a>
+        </section>
+
+        <!-- Inline Google Sheets Viewer Container -->
+        <section class="sheet-viewer-container" id="sheet-viewer-container">
+            <div class="viewer-header">
+                <div class="viewer-title-area">
+                    <button type="button" class="viewer-back-btn" id="viewer-back-btn" aria-label="Back to dashboard cards">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="19" y1="12" x2="5" y2="12"></line>
+                            <polyline points="12 19 5 12 12 5"></polyline>
+                        </svg>
+                        <span>Back</span>
+                    </button>
+                    <span class="viewer-title" id="viewer-title">Kannada Subject Sheet</span>
+                    <select id="viewer-sheet-select" style="display: none; padding: 6px 12px; border-radius: 8px; border: 1.5px solid var(--clr-border); background-color: #ffffff; color: var(--clr-text-main); font-weight: 600; font-size: 13.5px; font-family: inherit; cursor: pointer; outline: none; margin-left: 12px;"></select>
+                </div>
+                <div class="viewer-controls">
+                    <!-- Reload Button -->
+                    <button type="button" class="btn-control" id="viewer-reload-btn" aria-label="Reload Google Sheet">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M23 4v6h-6M1 20v-6h6M21.94 8.58A10 10 0 1 0 22 12"/>
+                        </svg>
+                        <span>Reload</span>
+                    </button>
+                    <!-- Open in New Tab Button -->
+                    <a href="#" target="_blank" class="btn-control" id="viewer-external-btn" aria-label="Open in Google Sheets (new tab)">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/>
+                        </svg>
+                        <span>Open in Google Sheets</span>
+                    </a>
+                    <!-- Submit Progress Button -->
+                    <button type="button" class="btn-control btn-submit-progress" id="viewer-submit-btn" aria-label="Submit subject progress">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        <span>Submit Progress</span>
+                    </button>
+                </div>
+            </div>
+            <div class="sheet-iframe-wrapper">
+                <iframe src="" class="sheet-iframe" id="sheet-iframe" title="Google Sheet Viewer" allow="clipboard-read; clipboard-write"></iframe>
+            </div>
+        </section>
+    </main>
+
+    <!-- Logout & Language Switch Logic Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const getApiUrl = (endpoint) => {
+                const isLocalFile = window.location.protocol === 'file:';
+                if (isLocalFile) {
+                    return `http://localhost:3000${endpoint}`;
+                }
+                if (window.location.port && window.location.port !== '3000') {
+                    return `${window.location.protocol}//${window.location.hostname}:3000${endpoint}`;
+                }
+                return endpoint;
+            };
+
+            const logoutBtn = document.getElementById('logout-btn');
+            const langToggleBtn = document.getElementById('lang-toggle-btn');
+            const langBtnText = document.getElementById('lang-btn-text');
+
+            // Elements to translate
+            const brandName = document.getElementById('brand-name');
+            const studentName = document.getElementById('student-name');
+            const studentClass = document.getElementById('student-class');
+            const logoutBtnText = document.getElementById('logout-btn-text');
+            const welcomeHeading = document.getElementById('welcome-heading');
+            const welcomeSub = document.getElementById('welcome-sub');
+            
+            const subTitleKannada = document.getElementById('subject-title-kannada');
+            const subDescKannada = document.getElementById('subject-desc-kannada');
+            
+            const subTitleEnglish = document.getElementById('subject-title-english');
+            const subDescEnglish = document.getElementById('subject-desc-english');
+            
+            const subTitleMaths = document.getElementById('subject-title-maths');
+            const subDescMaths = document.getElementById('subject-desc-maths');
+
+            const translations = {
+                en: {
+                    brandName: "CRP",
+                    studentName: "CRP Director",
+                    studentClass: "Administrator Portal",
+                    logoutText: "Log Out",
+                    welcomeHeading: "Welcome Back, CRP Director!",
+                    welcomeSub: "Select a subject below to explore study materials, classroom assignments, practice tests, and syllabus progress details.",
+                    kannadaTitle: 'Kannada <span class="lang-sub">(ಕನ್ನಡ)</span>',
+                    kannadaDesc: "ಭಾಷಾ ವ್ಯಾಕರಣ, ಪ್ರಬಂಧಗಳು ಮತ್ತು ಸಾಹಿತ್ಯ ಸಂಗ್ರಹ ಅಧ್ಯಯನ.",
+                    englishTitle: "English",
+                    englishDesc: "Develop grammar accuracy, essay layouts, and prose comprehensions.",
+                    mathsTitle: "Maths",
+                    mathsDesc: "Solve equations, explore arithmetic grids, and study geometry."
+                },
+                kn: {
+                    brandName: "ಸಿಆರ್ಪಿ",
+                    studentName: "ಸಿಆರ್ಪಿ ನಿರ್ದೇಶಕರು",
+                    studentClass: "ಆಡಳಿತ ಮಂಡಳಿ",
+                    logoutText: "ನಿರ್ಗಮಿಸಿ",
+                    welcomeHeading: "ಸುಸ್ವಾಗತ, ಸಿಆರ್ಪಿ ನಿರ್ದೇಶಕರೇ!",
+                    welcomeSub: "ಅಧ್ಯಯನ ಸಾಮಗ್ರಿಗಳು, ತರಗತಿಯ ನಿಯೋಜನೆಗಳು, ಪ್ರಾಯೋಗಿಕ ಪರೀಕ್ಷೆಗಳು ಮತ್ತು ಪಠ್ಯಕ್ರಮದ ವಿವರಗಳನ್ನು ಪರಿಶೀಲಿಸಲು ಕೆಳಗಿನ ವಿಷಯವನ್ನು ಆಯ್ಕೆಮಾಡಿ.",
+                    kannadaTitle: 'ಕನ್ನಡ <span class="lang-sub">(Kannada)</span>',
+                    kannadaDesc: "ಭಾಷಾ ವ್ಯಾಕರಣ, ಪ್ರಬಂಧಗಳು ಮತ್ತು ಸಾಹಿತ್ಯ ಸಂಗ್ರಹ ಅಧ್ಯಯನ.",
+                    englishTitle: "ಇಂಗ್ಲಿಷ್ (English)",
+                    englishDesc: "ವ್ಯಾಕರಣದ ನಿಖರತೆ, ಪ್ರಬಂಧ ವಿನ್ಯಾಸಗಳು ಮತ್ತು ಗದ್ಯ ಗ್ರಹಿಕೆಯನ್ನು ಸುಧಾರಿಸಿ.",
+                    mathsTitle: "ಗಣಿತ (Maths)",
+                    mathsDesc: "ಸಮೀಕರಣಗಳನ್ನು ಬಿಡಿಸಿ, ಅಂಕಗಣಿತದ ಕೋಷ್ಟಕಗಳನ್ನು ಅನ್ವೇಷಿಸಿ ಮತ್ತು ರೇಖಾಗಣಿತವನ್ನು ಕಲಿಯಿರಿ."
+                }
+            };
+
+            let currentLang = 'en';
+
+            langToggleBtn.addEventListener('click', () => {
+                currentLang = currentLang === 'en' ? 'kn' : 'en';
+                
+                // Update text based on chosen language
+                const data = translations[currentLang];
+                
+                brandName.textContent = data.brandName;
+                studentName.textContent = data.studentName;
+                studentClass.textContent = data.studentClass;
+                logoutBtnText.textContent = data.logoutText;
+                welcomeHeading.textContent = data.welcomeHeading;
+                welcomeSub.textContent = data.welcomeSub;
+                
+                subTitleKannada.innerHTML = data.kannadaTitle;
+                subDescKannada.textContent = data.kannadaDesc;
+                
+                subTitleEnglish.innerHTML = data.englishTitle;
+                subDescEnglish.textContent = data.englishDesc;
+                
+                subTitleMaths.innerHTML = data.mathsTitle;
+                subDescMaths.textContent = data.mathsDesc;
+
+                // Toggle language button label
+                langBtnText.textContent = currentLang === 'en' ? 'ಕನ್ನಡ' : 'English';
+                langToggleBtn.setAttribute('aria-label', currentLang === 'en' ? 'Switch Language to Kannada' : 'Switch Language to English');
+
+                // Real-time title & dropdown update if sheet is currently open
+                if (viewerContainer.style.display === 'flex' && currentSubjectKey) {
+                    updateDropdownAndTitle(currentSubjectKey);
+                }
+            });
+
+            // Default Placeholders
+            const defaultUrls = {
+                kannada: 'https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit?usp=sharing',
+                english: 'https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit?usp=sharing',
+                maths: 'https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit?usp=sharing'
+            };
+
+            const parseSubjectUrls = (value, defaultUrl) => {
+                if (Array.isArray(value)) {
+                    return value;
+                }
+                if (typeof value === 'string' && value.trim() !== '') {
+                    return [{ name: 'Default Sheet', url: value }];
+                }
+                return [{ name: 'Default Sheet', url: defaultUrl }];
+            };
+
+            // Store URLs locally in an object
+            let serverUrls = {};
+
+            const getSubjectName = (subjectKey) => {
+                if (subjectKey === 'kannada') {
+                    return currentLang === 'en' ? 'Kannada' : 'ಕನ್ನಡ';
+                }
+                if (subjectKey === 'english') {
+                    return currentLang === 'en' ? 'English' : 'ಇಂಗ್ಲಿಷ್';
+                }
+                if (subjectKey === 'maths') {
+                    return currentLang === 'en' ? 'Maths' : 'ಗಣಿತ';
+                }
+                return '';
+            };
+
+            const fetchSettings = () => {
+                fetch(getApiUrl('/api/settings'))
+                    .then(res => res.json())
+                    .then(data => {
+                        const kanLinks = parseSubjectUrls(data.kannada, defaultUrls.kannada);
+                        const engLinks = parseSubjectUrls(data.english, defaultUrls.english);
+                        const matLinks = parseSubjectUrls(data.maths, defaultUrls.maths);
+                        
+                        serverUrls = {
+                            kannada: kanLinks,
+                            english: engLinks,
+                            maths: matLinks,
+                            submissions: data.submissions || {}
+                        };
+                        
+                        // If we are currently showing a sheet, update switcher dropdown dynamically
+                        if (viewerContainer.style.display === 'flex' && currentSubjectKey) {
+                            updateDropdownAndTitle(currentSubjectKey);
+                        }
+                    })
+                    .catch(err => {
+                        console.error('Error loading settings from server:', err);
+                        // Fallback to local defaults if settings haven't been loaded successfully yet
+                        if (!serverUrls.kannada) {
+                            const kanLinks = [{ name: 'Default Sheet', url: defaultUrls.kannada }];
+                            const engLinks = [{ name: 'Default Sheet', url: defaultUrls.english }];
+                            const matLinks = [{ name: 'Default Sheet', url: defaultUrls.maths }];
+                            
+                            serverUrls = {
+                                kannada: kanLinks,
+                                english: engLinks,
+                                maths: matLinks,
+                                submissions: {}
+                            };
+                        }
+                    });
+            };
+
+            // Fetch URLs from the server on load and start polling
+            fetchSettings();
+            setInterval(fetchSettings, 5000);
+
+            // Heartbeat system to register active teacher status on the server
+            const teacherUsername = sessionStorage.getItem('teacher_username') || 'teacher_' + Math.random().toString(36).substr(2, 5);
+            const sendHeartbeat = () => {
+                fetch(getApiUrl('/api/heartbeat'), {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId: teacherUsername, role: 'teacher' })
+                }).catch(err => console.error('Heartbeat ping failed:', err));
+            };
+            
+            // Send initial heartbeat and then every 15 seconds
+            sendHeartbeat();
+            setInterval(sendHeartbeat, 15000);
+
+            const cardKan = document.getElementById('card-kannada');
+            const cardEng = document.getElementById('card-english');
+            const cardMat = document.getElementById('card-maths');
+
+            const gridSection = document.querySelector('.subject-grid');
+            const welcomeHero = document.querySelector('.welcome-hero');
+            const viewerContainer = document.getElementById('sheet-viewer-container');
+            const viewerTitle = document.getElementById('viewer-title');
+            const viewerIframe = document.getElementById('sheet-iframe');
+            const viewerBackBtn = document.getElementById('viewer-back-btn');
+            const viewerReloadBtn = document.getElementById('viewer-reload-btn');
+            const viewerExternalBtn = document.getElementById('viewer-external-btn');
+
+            let activeUrl = '';
+            let currentSubjectKey = '';
+            const viewerSubmitBtn = document.getElementById('viewer-submit-btn');
+
+            const getEmbedUrl = (url) => {
+                if (!url) return '';
+                try {
+                    if (url.includes('docs.google.com/spreadsheets')) {
+                        const urlObj = new URL(url);
+                        // Convert non-editable paths (like /pubhtml, /preview) to /edit
+                        if (urlObj.pathname.includes('/d/')) {
+                            const parts = urlObj.pathname.split('/d/');
+                            const id = parts[1].split('/')[0];
+                            urlObj.pathname = `/spreadsheets/d/${id}/edit`;
+                        }
+                        // Force rm=minimal to hide menu bar for clean display, but preserve other params like gid
+                        urlObj.searchParams.set('rm', 'minimal');
+                        return urlObj.toString();
+                    }
+                } catch (e) {
+                    console.error('Invalid URL passed to getEmbedUrl:', e);
+                }
+                return url;
+            };
+
+            const updateSubmitButtonState = (subjectKey, activeSheetUrl) => {
+                const key = `${teacherUsername}:${subjectKey}:${activeSheetUrl}`;
+                const isSubmitted = serverUrls.submissions && serverUrls.submissions[key];
+                
+                if (isSubmitted) {
+                    viewerSubmitBtn.innerHTML = `
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M23 4v6h-6M1 20v-6h6M21.94 8.58A10 10 0 1 0 22 12"/>
+                        </svg>
+                        <span>${currentLang === 'en' ? 'Resubmit Progress' : 'ಪ್ರಗತಿ ಮರು ಸಲ್ಲಿಸಿ'}</span>
+                    `;
+                    viewerSubmitBtn.disabled = false;
+                } else {
+                    viewerSubmitBtn.innerHTML = `
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        <span>${currentLang === 'en' ? 'Submit Progress' : 'ಪ್ರಗತಿ ಸಲ್ಲಿಸಿ'}</span>
+                    `;
+                    viewerSubmitBtn.disabled = false;
+                }
+            };
+
+            const updateDropdownAndTitle = (subjectKey) => {
+                const sheets = serverUrls[subjectKey] || [];
+                const selectEl = document.getElementById('viewer-sheet-select');
+                if (!selectEl) return;
+                
+                const subjectName = getSubjectName(subjectKey);
+
+                // Check if current activeUrl is still in the new sheets array
+                let activeIndex = sheets.findIndex(s => s.url === activeUrl);
+                if (activeIndex === -1) {
+                    // Active URL was deleted or changed, fall back to the first sheet
+                    if (sheets.length > 0) {
+                        activeUrl = sheets[0].url;
+                        viewerIframe.src = getEmbedUrl(sheets[0].url);
+                        viewerExternalBtn.href = sheets[0].url;
+                        activeIndex = 0;
+                    } else {
+                        // No sheets left, go back to dashboard
+                        hideSheet();
+                        return;
+                    }
+                }
+
+                if (sheets.length > 1) {
+                    selectEl.style.display = 'inline-block';
+                    const newHtml = sheets.map((sheet, index) => `<option value="${index}">${sheet.name}</option>`).join('');
+                    if (selectEl.innerHTML !== newHtml) {
+                        selectEl.innerHTML = newHtml;
+                    }
+                    if (selectEl.value !== String(activeIndex)) {
+                        selectEl.value = String(activeIndex);
+                    }
+                    
+                    // Bind change listener
+                    selectEl.onchange = (e) => {
+                        const selectedIndex = e.target.value;
+                        const selectedSheet = sheets[selectedIndex];
+                        if (selectedSheet) {
+                            activeUrl = selectedSheet.url;
+                            viewerIframe.src = getEmbedUrl(selectedSheet.url);
+                            viewerExternalBtn.href = selectedSheet.url;
+                            updateSubmitButtonState(subjectKey, selectedSheet.url);
+                        }
+                    };
+                } else {
+                    selectEl.style.display = 'none';
+                }
+
+                if (sheets.length === 1) {
+                    viewerTitle.textContent = `${subjectName} Subject Sheet`;
+                } else {
+                    viewerTitle.textContent = `${subjectName} - `;
+                }
+
+                updateSubmitButtonState(subjectKey, activeUrl);
+            };
+
+            const showSheet = (subjectKey) => {
+                currentSubjectKey = subjectKey;
+                const sheets = serverUrls[subjectKey] || [];
+                if (!Array.isArray(sheets) || sheets.length === 0) {
+                    alert('No Google Sheet configured for this subject.');
+                    return;
+                }
+
+                const firstSheet = sheets[0];
+                activeUrl = firstSheet.url;
+                
+                updateDropdownAndTitle(subjectKey);
+                
+                viewerIframe.src = getEmbedUrl(firstSheet.url);
+                viewerExternalBtn.href = firstSheet.url;
+
+                // Hide grid & hero text, show viewer
+                gridSection.style.display = 'none';
+                welcomeHero.style.display = 'none';
+                viewerContainer.style.display = 'flex';
+            };
+
+            const hideSheet = () => {
+                viewerIframe.src = '';
+                viewerContainer.style.display = 'none';
+                gridSection.style.display = 'grid';
+                welcomeHero.style.display = 'block';
+            };
+
+            viewerBackBtn.addEventListener('click', hideSheet);
+
+            viewerReloadBtn.addEventListener('click', () => {
+                if (activeUrl) {
+                    viewerIframe.src = getEmbedUrl(activeUrl);
+                }
+            });
+
+            viewerSubmitBtn.addEventListener('click', () => {
+                if (!currentSubjectKey || !activeUrl) return;
+                
+                const key = `${teacherUsername}:${currentSubjectKey}:${activeUrl}`;
+                const isSubmitted = serverUrls.submissions && serverUrls.submissions[key];
+
+                // Confirm action
+                const confirmMsg = isSubmitted 
+                    ? (currentLang === 'en' ? 'You have already submitted progress for this sheet. Do you want to update/resubmit?' : 'ಈ ಶೀಟ್‌ಗಾಗಿ ನೀವು ಈಗಾಗಲೇ ಪ್ರಗತಿಯನ್ನು ಸಲ್ಲಿಸಿದ್ದೀರಿ. ಮರು ಸಲ್ಲಿಸಲು ಬಯಸುವಿರಾ?')
+                    : (currentLang === 'en' ? 'Are you sure you want to submit your progress for this sheet?' : 'ಈ ಶೀಟ್‌ ಪ್ರಗತಿಯನ್ನು ಸಲ್ಲಿಸಲು ನೀವು ಖಚಿತವಾಗಿ ಬಯಸುವಿರಾ?');
+                
+                if (!confirm(confirmMsg)) {
+                    return;
+                }
+                
+                viewerSubmitBtn.disabled = true;
+                viewerSubmitBtn.textContent = currentLang === 'en' ? 'Submitting...' : 'ಸಲ್ಲಿಸಲಾಗುತ್ತಿದೆ...';
+
+                fetch(getApiUrl('/api/submit'), {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        teacher: teacherUsername, 
+                        subject: currentSubjectKey,
+                        sheetUrl: activeUrl
+                    })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        // Update local submissions cache
+                        if (!serverUrls.submissions) serverUrls.submissions = {};
+                        serverUrls.submissions[`${teacherUsername}:${currentSubjectKey}:${activeUrl}`] = true;
+                        
+                        updateSubmitButtonState(currentSubjectKey, activeUrl);
+                        alert(currentLang === 'en' ? 'Syllabus progress submitted successfully!' : 'ಪಠ್ಯಕ್ರಮದ ಪ್ರಗತಿಯನ್ನು ಯಶಸ್ವಿಯಾಗಿ ಸಲ್ಲಿಸಲಾಗಿದೆ!');
+                    } else {
+                        throw new Error('Server returned failure status');
+                    }
+                })
+                .catch(err => {
+                    console.error('Submission failed:', err);
+                    alert(currentLang === 'en' ? 'Failed to submit progress. Please try again.' : 'ಪ್ರಗತಿಯನ್ನು ಸಲ್ಲಿಸಲು ವಿಫಲವಾಗಿದೆ. ದಯವಿಟ್ಟು ಮತ್ತೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸಿ.');
+                    updateSubmitButtonState(currentSubjectKey, activeUrl);
+                });
+            });
+
+            // Bind click handlers to the subject cards (preventing default link behavior)
+            cardKan.addEventListener('click', (e) => {
+                e.preventDefault();
+                showSheet('kannada');
+            });
+            cardEng.addEventListener('click', (e) => {
+                e.preventDefault();
+                showSheet('english');
+            });
+            cardMat.addEventListener('click', (e) => {
+                e.preventDefault();
+                showSheet('maths');
+            });
+
+            logoutBtn.addEventListener('click', () => {
+                // Redirect back to login page
+                window.location.href = 'index.html';
+            });
+        });
+    </script>
+</body>
+</html>

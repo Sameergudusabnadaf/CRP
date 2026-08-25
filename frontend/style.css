@@ -1,0 +1,588 @@
+/* style.css - Design System & Modern UI Styles */
+
+/* 1. Reset and Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@500;600;700&display=swap');
+
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    /* Color Palette (Color Hunt: e8f5e9, a5d6a7, 66bb6a, 1b5e20) */
+    --clr-primary: #66bb6a;       /* Medium Accent Green */
+    --clr-primary-hover: #1b5e20; /* Deep Forest Green */
+    --clr-secondary: #a5d6a7;     /* Soft Light Green */
+    --clr-accent-gradient: linear-gradient(135deg, #66bb6a 0%, #1b5e20 100%);
+    --clr-accent-gradient-hover: linear-gradient(135deg, #57a65b 0%, #134417 100%);
+    
+    --clr-bg: #e8f5e9;            /* Base Light Mint */
+    --clr-card-bg: #ffffff;
+    
+    --clr-text-main: #1b5e20;     /* Deep Forest Green */
+    --clr-text-muted: #3d7e43;    /* Muted Organic Green */
+    --clr-text-light: #83b987;    /* Light Muted Green */
+    
+    --clr-border: #c8e6c9;        /* Soft mint border */
+    --clr-border-focus: #66bb6a;
+    
+    /* Layout & Shadows */
+    --radius-lg: 24px;
+    --radius-md: 12px;
+    --radius-sm: 8px;
+    
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    /* Double-layer premium shadow with green tint */
+    --shadow-card: 0 10px 30px -10px rgba(0, 0, 0, 0.04), 0 20px 40px -15px rgba(0, 0, 0, 0.08), 0 0 50px rgba(102, 187, 106, 0.04);
+    
+    /* Transitions */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* 2. Global Body & Background */
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--clr-bg);
+    color: var(--clr-text-main);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* Modern Gradient Mesh Background */
+.bg-mesh {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    overflow: hidden;
+    background-color: #e8f5e9;
+}
+
+/* Animated fluid glowing gradient blobs using green palette */
+.bg-blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.45;
+    mix-blend-mode: multiply;
+    animation: float-blob 20s infinite alternate ease-in-out;
+}
+
+.bg-blob-1 {
+    top: -10%;
+    left: -10%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(102,187,106,0.6) 0%, rgba(27,94,32,0.1) 70%);
+    animation-duration: 25s;
+}
+
+.bg-blob-2 {
+    bottom: -10%;
+    right: -10%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(27,94,32,0.5) 0%, rgba(165,214,167,0.1) 70%);
+    animation-delay: -5s;
+    animation-duration: 30s;
+}
+
+.bg-blob-3 {
+    top: 40%;
+    left: 50%;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(102,187,106,0.4) 0%, rgba(200,230,201,0.1) 70%);
+    animation-delay: -10s;
+    animation-duration: 22s;
+}
+
+@keyframes float-blob {
+    0% {
+        transform: translate(0, 0) scale(1);
+    }
+    33% {
+        transform: translate(30px, -50px) scale(1.1);
+    }
+    66% {
+        transform: translate(-20px, 20px) scale(0.95);
+    }
+    100% {
+        transform: translate(0, 0) scale(1);
+    }
+}
+
+/* Grid overlay for a premium tech touch */
+.bg-grid {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: radial-gradient(rgba(15, 23, 42, 0.03) 1.5px, transparent 1.5px);
+    background-size: 24px 24px;
+    pointer-events: none;
+}
+
+/* 3. Central Login Container & Card */
+.login-container {
+    width: 100%;
+    max-width: 460px;
+    padding: 24px;
+    z-index: 10;
+}
+
+.login-card {
+    background-color: var(--clr-card-bg);
+    border-radius: var(--radius-lg);
+    padding: 40px;
+    box-shadow: var(--shadow-card);
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    transition: var(--transition-smooth);
+}
+
+.login-card:hover {
+    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.05), 0 30px 60px -15px rgba(0, 0, 0, 0.08), 0 0 60px rgba(59, 130, 246, 0.04);
+}
+
+/* 4. App Header styles */
+.app-header {
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.brand-logo {
+    width: 44px;
+    height: 44px;
+    background: #ffffff !important;
+    border-radius: 50% !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--clr-border) !important;
+    box-shadow: 0 4px 10px rgba(59, 130, 246, 0.15) !important;
+    overflow: hidden;
+}
+.brand-logo img {
+    width: 85% !important;
+    height: 85% !important;
+    object-fit: contain !important;
+    border-radius: 50% !important;
+}
+
+.brand-name {
+    font-family: 'Outfit', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    color: var(--clr-text-main);
+}
+
+.app-header h1 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--clr-text-main);
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+}
+
+.app-header p {
+    font-size: 14px;
+    color: var(--clr-text-muted);
+}
+
+/* 5. Form Control & Inputs */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--clr-text-main);
+    margin-bottom: 8px;
+    letter-spacing: 0.2px;
+}
+
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-icon-left {
+    position: absolute;
+    left: 16px;
+    width: 20px;
+    height: 20px;
+    color: var(--clr-text-light);
+    pointer-events: none;
+    transition: var(--transition-smooth);
+}
+
+.form-input {
+    width: 100%;
+    height: 48px;
+    padding: 0 16px 0 48px;
+    border-radius: var(--radius-md);
+    border: 1.5px solid var(--clr-border);
+    background-color: #ffffff;
+    color: var(--clr-text-main);
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 400;
+    outline: none;
+    transition: var(--transition-smooth);
+}
+
+/* Password eye button spacing */
+.form-input-password {
+    padding-right: 48px;
+}
+
+.form-input:focus {
+    border-color: var(--clr-primary);
+    box-shadow: 0 0 0 4px rgba(102, 187, 106, 0.15);
+}
+
+/* Change icon color on input focus */
+.input-wrapper:focus-within .input-icon-left {
+    color: var(--clr-primary);
+}
+
+/* Password Toggle Button styling */
+.password-toggle {
+    position: absolute;
+    right: 16px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    color: var(--clr-text-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition-smooth);
+    border-radius: var(--radius-sm);
+}
+
+.password-toggle:hover {
+    color: var(--clr-text-main);
+    background-color: var(--clr-bg);
+}
+
+.password-toggle:focus-visible {
+    outline: 2px solid var(--clr-primary);
+}
+
+/* 6. Form Extras (Checkbox & Forgot Link) */
+.form-extras {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    font-size: 13.5px;
+}
+
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+    color: var(--clr-text-muted);
+}
+
+.checkbox-container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.checkbox-custom {
+    width: 18px;
+    height: 18px;
+    border: 1.5px solid var(--clr-border);
+    border-radius: 4px;
+    margin-right: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
+    transition: var(--transition-smooth);
+}
+
+.checkbox-custom svg {
+    width: 12px;
+    height: 12px;
+    fill: none;
+    stroke: #ffffff;
+    stroke-width: 3px;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transform: scale(0);
+    transition: var(--transition-bounce);
+}
+
+/* Checked state */
+.checkbox-container input:checked ~ .checkbox-custom {
+    background-color: var(--clr-primary);
+    border-color: var(--clr-primary);
+}
+
+.checkbox-container input:checked ~ .checkbox-custom svg {
+    transform: scale(1);
+}
+
+/* Focus styling for custom checkbox */
+.checkbox-container:focus-within .checkbox-custom,
+.checkbox-container:hover .checkbox-custom {
+    border-color: var(--clr-primary);
+}
+
+.forgot-password-link {
+    color: var(--clr-primary);
+    text-decoration: none;
+    font-weight: 500;
+    transition: var(--transition-smooth);
+}
+
+.forgot-password-link:hover {
+    color: var(--clr-primary-hover);
+    text-decoration: underline;
+}
+
+/* 7. Action Button */
+.btn-login {
+    width: 100%;
+    height: 48px;
+    background: var(--clr-accent-gradient);
+    border: none;
+    border-radius: var(--radius-md);
+    color: #ffffff;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(27, 94, 32, 0.25);
+    transition: var(--transition-bounce);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-login:hover {
+    background: var(--clr-accent-gradient-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(27, 94, 32, 0.35);
+}
+
+.btn-login:active {
+    transform: translateY(1px);
+    box-shadow: 0 3px 8px rgba(27, 94, 32, 0.2);
+}
+
+.btn-login:focus-visible {
+    outline: 3px solid rgba(165, 214, 167, 0.3);
+}
+
+/* 8. Separator / Divider */
+.divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 24px 0;
+    color: var(--clr-text-light);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.divider::before, .divider::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1.5px solid var(--clr-border);
+}
+
+.divider::before {
+    margin-right: 12px;
+}
+
+.divider::after {
+    margin-left: 12px;
+}
+
+/* 9. Social Logins */
+.social-container {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.btn-social {
+    flex: 1;
+    height: 46px;
+    border: 1.5px solid var(--clr-border);
+    border-radius: var(--radius-md);
+    background-color: #ffffff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--clr-text-main);
+    transition: var(--transition-bounce);
+}
+
+.btn-social svg {
+    width: 20px;
+    height: 20px;
+}
+
+.btn-social:hover {
+    background-color: #f8fafc;
+    border-color: var(--clr-text-light);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-sm);
+}
+
+.btn-social:active {
+    transform: translateY(1px);
+}
+
+.btn-social:focus-visible {
+    outline: 2px solid var(--clr-primary);
+}
+
+/* 10. Footer Card links */
+.card-footer {
+    text-align: center;
+    font-size: 13.5px;
+    color: var(--clr-text-muted);
+}
+
+.signup-link {
+    color: var(--clr-primary);
+    text-decoration: none;
+    font-weight: 600;
+    transition: var(--transition-smooth);
+}
+
+.signup-link:hover {
+    color: var(--clr-primary-hover);
+    text-decoration: underline;
+}
+
+/* 11. Accessibility / Screen Readers */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* 12. Feedback / Validation styling (JS) */
+.form-input.is-invalid {
+    border-color: #ef4444;
+}
+
+.form-input.is-invalid:focus {
+    box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.15);
+}
+
+.error-message {
+    color: #ef4444;
+    font-size: 12px;
+    margin-top: 4px;
+    display: none;
+    align-items: center;
+    gap: 4px;
+}
+
+.error-message svg {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+}
+
+.is-invalid + .error-message {
+    display: flex;
+}
+
+.success-notification {
+    position: fixed;
+    top: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-100px);
+    background-color: #10b981;
+    color: white;
+    padding: 12px 24px;
+    border-radius: var(--radius-md);
+    box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.3);
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    z-index: 100;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.success-notification.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+}
+
+.success-notification svg {
+    width: 20px;
+    height: 20px;
+}
+
+/* 13. Responsive Styles */
+@media (max-width: 480px) {
+    .login-container {
+        padding: 16px;
+    }
+    
+    .login-card {
+        padding: 32px 20px;
+        border-radius: var(--radius-md);
+    }
+    
+    .app-header h1 {
+        font-size: 24px;
+    }
+    
+    .social-container {
+        flex-direction: column;
+    }
+}

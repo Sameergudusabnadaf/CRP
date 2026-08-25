@@ -1,0 +1,1353 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="CRP Education Portal Admin Control Dashboard.">
+    <title>Admin Dashboard - CRP Amminbavi</title>
+    <link rel="stylesheet" href="admin_style.css">
+    <style>
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(46, 125, 50, 0.7);
+            }
+
+            70% {
+                box-shadow: 0 0 0 6px rgba(46, 125, 50, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(46, 125, 50, 0);
+            }
+        }
+
+        .stats-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-card-hover) !important;
+        }
+
+        /* Modal Styles */
+        @keyframes modalSlide {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        .modal-overlay {
+            display: none !important;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(3px);
+        }
+        
+        .modal-overlay.active {
+            display: flex !important;
+        }
+
+        .modal-body-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 14px;
+            border-bottom: 1px solid var(--clr-border);
+        }
+
+        .modal-body-item:last-child {
+            border-bottom: none;
+        }
+    </style>
+</head>
+
+<body style="background-color: var(--clr-dashboard-bg);">
+
+    <!-- Sticky Navigation Header -->
+    <header class="nav-header">
+        <div class="brand">
+            <div class="brand-logo" aria-hidden="true">
+                <img src="logo.png" alt="CRP Amminbavi Logo">
+            </div>
+            <span class="brand-name" id="brand-name">CRP Amminbavi</span>
+        </div>
+
+        <div class="admin-profile">
+            <span class="admin-badge" id="admin-badge">SYSTEM ADMIN</span>
+            <!-- Language Toggle Button -->
+            <button type="button" class="btn-lang-toggle" id="lang-toggle-btn" aria-label="Switch Language to Kannada">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/>
+                </svg>
+                <span id="lang-btn-text">ಕನ್ನಡ</span>
+            </button>
+            <!-- Add User Button -->
+            <button type="button" class="btn-add-user" id="add-user-btn" aria-label="Add User">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                    <circle cx="8" cy="7" r="4"/>
+                    <line x1="20" y1="8" x2="20" y2="14"/>
+                    <line x1="23" y1="11" x2="17" y2="11"/>
+                </svg>
+                <span id="add-user-btn-text">Add User</span>
+            </button>
+            <!-- Log Out Button -->
+            <button type="button" class="btn-logout" id="logout-btn" aria-label="Log out of admin panel">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9" />
+                </svg>
+                <span id="logout-btn-text">Log Out</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="dashboard-container">
+
+        <!-- Dashboard Header -->
+        <header class="dashboard-header">
+            <h2 id="dashboard-title">Admin Dashboard</h2>
+            <p id="dashboard-subtitle">Select a subject Google Sheet below to update class curriculum, student marks, and class schedules.</p>
+            <div class="sharing-tip"
+                style="margin-top: 12px; font-size: 13.5px; color: var(--clr-text-muted); display: flex; align-items: center; gap: 8px; background-color: rgba(200, 169, 107, 0.08); padding: 10px 16px; border-radius: var(--radius-sm); border-left: 3px solid var(--clr-secondary);">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none"
+                    stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+                    style="color: var(--clr-secondary); flex-shrink: 0;">
+                    <circle cx="12" cy="12" r="10" />
+                    <line x1="12" y1="16" x2="12" y2="12" />
+                    <line x1="12" y1="8" x2="12.01" y2="8" />
+                </svg>
+                <span id="setup-tip-text"><strong>Setup Tip:</strong> For both users and admins to edit sheets directly, ensure each Google Sheet's General Access is set to <strong>"Anyone with the link: Editor"</strong>.</span>
+            </div>
+        </header>
+
+        <!-- Stats Overview Section -->
+        <section class="stats-overview">
+            <!-- Card 1: Logged-in Teachers -->
+            <div class="stats-card theme-teachers" id="logged-teachers-card" style="cursor: pointer;">
+                <div class="stats-icon-wrapper">
+                    <!-- Teacher / Person Icon -->
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="28" height="28" fill="none"
+                        stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                        <circle cx="9" cy="7" r="4" />
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                    </svg>
+                    <!-- Small green online dot -->
+                    <span class="online-dot"
+                        style="position: absolute; top: -1px; right: -1px; width: 12px; height: 12px; border-radius: 50%; background-color: #2e7d32; border: 2px solid #ffffff; box-shadow: 0 0 0 2px rgba(46, 125, 50, 0.2); animation: pulse 2s infinite;"></span>
+                </div>
+                <div class="stats-info">
+                    <span class="stats-number" id="logged-teachers-count">25</span>
+                    <span class="stats-label" id="stats-teachers-label">Logged-in Teachers</span>
+                </div>
+            </div>
+
+            <!-- Card 2: Completed -->
+            <div class="stats-card theme-completed" id="completed-tasks-card" style="cursor: pointer;">
+                <div class="stats-icon-wrapper">
+                    <!-- Green Checkmark Icon -->
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="28" height="28" fill="none"
+                        stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12" />
+                    </svg>
+                </div>
+                <div class="stats-info">
+                    <span class="stats-number" id="completed-tasks-count">35</span>
+                    <span class="stats-label" id="stats-completed-label">Completed</span>
+                </div>
+            </div>
+
+            <!-- Card 3: Not Completed -->
+            <div class="stats-card theme-pending" id="not-completed-tasks-card" style="cursor: pointer;">
+                <div class="stats-icon-wrapper">
+                    <!-- Orange Warning/Pending Icon -->
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="28" height="28" fill="none"
+                        stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10" />
+                        <line x1="12" y1="8" x2="12" y2="12" />
+                        <line x1="12" y1="16" x2="12.01" y2="16" />
+                    </svg>
+                </div>
+                <div class="stats-info">
+                    <span class="stats-number" id="not-completed-tasks-count">12</span>
+                    <span class="stats-label" id="stats-pending-label">Not Completed</span>
+                </div>
+            </div>
+
+            <!-- Card 4: Registered Teachers -->
+            <div class="stats-card theme-registered-users" id="registered-users-card" style="cursor: pointer;">
+                <div class="stats-icon-wrapper">
+                    <!-- Users Icon -->
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="28" height="28" fill="none"
+                        stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                        <circle cx="9" cy="7" r="4" />
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                    </svg>
+                </div>
+                <div class="stats-info">
+                    <span class="stats-number" id="registered-teachers-count">0</span>
+                    <span class="stats-label" id="stats-registered-label">Registered Teachers</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Horizontal Grid (3 columns) -->
+        <section class="admin-grid">
+
+            <!-- Subject 1: Kannada -->
+            <article class="admin-card card-kannada" id="card-kannada">
+                <div class="card-icon" aria-hidden="true">
+                    <img src="kannada_symbol.png" alt="Kannada Symbol"
+                        style="width: 100%; height: 100%; object-fit: contain;">
+                </div>
+                <h3 class="card-title">Kannada</h3>
+                <p class="card-desc">Google Sheet connected</p>
+
+                <div class="links-list" id="kannada-links-list"
+                    style="margin-bottom: 12px; display: flex; flex-direction: column; gap: 8px; width: 100%; max-height: 150px; overflow-y: auto; padding-right: 4px;">
+                </div>
+                <button type="button" class="btn-add-link" id="add-kannada-link-btn"
+                    style="background: none; border: 1.5px dashed var(--clr-border); color: var(--clr-text-muted); width: 100%; height: 36px; border-radius: 8px; font-size: 12.5px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; margin-bottom: 16px; transition: var(--transition-smooth);">
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="12" y1="5" x2="12" y2="19" />
+                        <line x1="5" y1="12" x2="19" y2="12" />
+                    </svg>
+                    <span>Add Sheet Link</span>
+                </button>
+
+                <button type="button" class="btn-manage" id="open-kannada-btn" aria-label="Open Kannada Google Sheet">
+                    <span>Open Sheet</span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3" />
+                    </svg>
+                </button>
+            </article>
+
+            <!-- Subject 2: English -->
+            <article class="admin-card card-english" id="card-english">
+                <div class="card-icon" aria-hidden="true">
+                    <img src="english_symbol.png" alt="English Symbol"
+                        style="width: 100%; height: 100%; object-fit: contain;">
+                </div>
+                <h3 class="card-title">English</h3>
+                <p class="card-desc">Google Sheet connected</p>
+
+                <div class="links-list" id="english-links-list"
+                    style="margin-bottom: 12px; display: flex; flex-direction: column; gap: 8px; width: 100%; max-height: 150px; overflow-y: auto; padding-right: 4px;">
+                </div>
+                <button type="button" class="btn-add-link" id="add-english-link-btn"
+                    style="background: none; border: 1.5px dashed var(--clr-border); color: var(--clr-text-muted); width: 100%; height: 36px; border-radius: 8px; font-size: 12.5px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; margin-bottom: 16px; transition: var(--transition-smooth);">
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="12" y1="5" x2="12" y2="19" />
+                        <line x1="5" y1="12" x2="19" y2="12" />
+                    </svg>
+                    <span>Add Sheet Link</span>
+                </button>
+
+                <button type="button" class="btn-manage" id="open-english-btn" aria-label="Open English Google Sheet">
+                    <span>Open Sheet</span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3" />
+                    </svg>
+                </button>
+            </article>
+
+            <!-- Subject 3: Maths -->
+            <article class="admin-card card-maths" id="card-maths">
+                <div class="card-icon" aria-hidden="true">
+                    <!-- Math Operators / Grid Icon -->
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                        <line x1="9" y1="3" x2="9" y2="21" />
+                        <line x1="15" y1="3" x2="15" y2="21" />
+                        <line x1="3" y1="9" x2="21" y2="9" />
+                        <line x1="3" y1="15" x2="21" y2="15" />
+                    </svg>
+                </div>
+                <h3 class="card-title">Maths</h3>
+                <p class="card-desc">Google Sheet connected</p>
+
+                <div class="links-list" id="maths-links-list"
+                    style="margin-bottom: 12px; display: flex; flex-direction: column; gap: 8px; width: 100%; max-height: 150px; overflow-y: auto; padding-right: 4px;">
+                </div>
+                <button type="button" class="btn-add-link" id="add-maths-link-btn"
+                    style="background: none; border: 1.5px dashed var(--clr-border); color: var(--clr-text-muted); width: 100%; height: 36px; border-radius: 8px; font-size: 12.5px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; margin-bottom: 16px; transition: var(--transition-smooth);">
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="12" y1="5" x2="12" y2="19" />
+                        <line x1="5" y1="12" x2="19" y2="12" />
+                    </svg>
+                    <span>Add Sheet Link</span>
+                </button>
+
+                <button type="button" class="btn-manage" id="open-maths-btn" aria-label="Open Maths Google Sheet">
+                    <span>Open Sheet</span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3" />
+                    </svg>
+                </button>
+            </article>
+
+        </section>
+
+        <!-- Completed Submissions Subject-wise Grid -->
+        <section class="submissions-grid">
+            <!-- Kannada submissions card -->
+            <div class="subject-submissions-card theme-kannada">
+                <h3 style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                    <span id="submissions-kannada-title">Kannada Submissions</span>
+                    <button type="button" class="btn-download-submissions" data-subject="kannada" id="download-kannada-btn" aria-label="Download Kannada Submissions CSV">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                    </button>
+                </h3>
+                <div class="submissions-list" id="kannada-submissions-list">
+                    <div class="submission-empty">No submissions received yet.</div>
+                </div>
+            </div>
+
+            <!-- English submissions card -->
+            <div class="subject-submissions-card theme-english">
+                <h3 style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                    <span id="submissions-english-title">English Submissions</span>
+                    <button type="button" class="btn-download-submissions" data-subject="english" id="download-english-btn" aria-label="Download English Submissions CSV">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                    </button>
+                </h3>
+                <div class="submissions-list" id="english-submissions-list">
+                    <div class="submission-empty">No submissions received yet.</div>
+                </div>
+            </div>
+
+            <!-- Maths submissions card -->
+            <div class="subject-submissions-card theme-maths">
+                <h3 style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                    <span id="submissions-maths-title">Maths Submissions</span>
+                    <button type="button" class="btn-download-submissions" data-subject="maths" id="download-maths-btn" aria-label="Download Maths Submissions CSV">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                    </button>
+                </h3>
+                <div class="submissions-list" id="maths-submissions-list">
+                    <div class="submission-empty">No submissions received yet.</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Inline Google Sheets Viewer Container -->
+        <section class="sheet-viewer-container" id="sheet-viewer-container">
+            <div class="viewer-header">
+                <div class="viewer-title-area">
+                    <button type="button" class="viewer-back-btn" id="viewer-back-btn"
+                        aria-label="Back to dashboard cards">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none"
+                            stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="19" y1="12" x2="5" y2="12"></line>
+                            <polyline points="12 19 5 12 12 5"></polyline>
+                        </svg>
+                        <span>Back</span>
+                    </button>
+                    <span class="viewer-title" id="viewer-title">Kannada Subject Sheet</span>
+                    <select id="viewer-sheet-select"
+                        style="display: none; padding: 6px 12px; border-radius: 8px; border: 1.5px solid var(--clr-border); background-color: #ffffff; color: var(--clr-text-main); font-weight: 600; font-size: 13.5px; font-family: inherit; cursor: pointer; outline: none; margin-left: 12px;"></select>
+                </div>
+                <div class="viewer-controls">
+                    <!-- Reload Button -->
+                    <button type="button" class="btn-control" id="viewer-reload-btn" aria-label="Reload Google Sheet">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="14" height="14" fill="none"
+                            stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M23 4v6h-6M1 20v-6h6M21.94 8.58A10 10 0 1 0 22 12" />
+                        </svg>
+                        <span>Reload</span>
+                    </button>
+                    <!-- Open in New Tab Button -->
+                    <a href="#" target="_blank" class="btn-control" id="viewer-external-btn"
+                        aria-label="Open in Google Sheets (new tab)">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="14" height="14" fill="none"
+                            stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3" />
+                        </svg>
+                        <span>Open in Google Sheets</span>
+                    </a>
+                </div>
+            </div>
+            <div class="sheet-iframe-wrapper">
+                <iframe src="" class="sheet-iframe" id="sheet-iframe" title="Google Sheet Viewer"
+                    allow="clipboard-read; clipboard-write"></iframe>
+            </div>
+        </section>
+    </main>
+
+    <!-- Google Sheet Configuration & Logout Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const getApiUrl = (endpoint) => {
+                const isLocalFile = window.location.protocol === 'file:';
+                if (isLocalFile) {
+                    return `http://localhost:3000${endpoint}`;
+                }
+                if (window.location.port && window.location.port !== '3000') {
+                    return `${window.location.protocol}//${window.location.hostname}:3000${endpoint}`;
+                }
+                return endpoint;
+            };
+
+            const logoutBtn = document.getElementById('logout-btn');
+
+            // Translation system
+            const translations = {
+                en: {
+                    brandName: "CRP Amminbavi",
+                    adminBadge: "SYSTEM ADMIN",
+                    logoutText: "Log Out",
+                    dashboardTitle: "Admin Dashboard",
+                    dashboardSub: "Select a subject Google Sheet below to update class curriculum, student marks, and class schedules.",
+                    setupTip: "<strong>Setup Tip:</strong> For both users and admins to edit sheets directly, ensure each Google Sheet's General Access is set to <strong>\"Anyone with the link: Editor\"</strong>.",
+                    statsTeachers: "Logged-in Teachers",
+                    statsCompleted: "Completed",
+                    statsPending: "Not Completed",
+                    titleKannada: "Kannada",
+                    titleEnglish: "English",
+                    titleMaths: "Maths",
+                    descConnected: "Google Sheet connected",
+                    btnOpenSheet: "Open Sheet",
+                    btnAddLink: "Add Sheet Link",
+                    kannadaSubmissions: "Kannada Submissions",
+                    englishSubmissions: "English Submissions",
+                    mathsSubmissions: "Maths Submissions",
+                    noSubmissions: "No submissions received yet.",
+                    viewerBack: "Back",
+                    viewerReload: "Reload",
+                    viewerExternal: "Open in Google Sheets",
+                    viewExcel: "View Excel ↗",
+                    noUrl: "No URL",
+                    downloadTooltip: "Download Submissions CSV",
+                    deleteTooltip: "Delete Submission",
+                    confirmDelete: "Are you sure you want to delete this submission?",
+                    deleteSuccess: "Submission deleted successfully.",
+                    deleteFailed: "Failed to delete submission.",
+                    addUserText: "Add User",
+                    promptAddUserEmail: "Enter email of the new teacher:",
+                    promptAddUserName: "Enter name of the new teacher (e.g. Teacher Ramesh):",
+                    promptAddUserPassword: "Enter password for the new teacher (minimum 6 characters):",
+                    addUserSuccess: "User added successfully!",
+                    addUserFailed: "Failed to add user.",
+                    addUserExists: "User already exists.",
+                    userManagementTitle: "Registered Teachers",
+                    deleteUserConfirm: "Are you sure you want to delete this teacher's account?",
+                    deleteUserSuccess: "Teacher account deleted successfully.",
+                    deleteUserFailed: "Failed to delete teacher account.",
+                    noUsersRegistered: "No teachers registered yet.",
+                    passwordLabel: "Password:",
+                    showPasswordLabel: "Show",
+                    hidePasswordLabel: "Hide",
+                    deleteUserTooltip: "Delete Teacher"
+                },
+                kn: {
+                    brandName: "ಸಿಆರ್ಪಿ ಅಮ್ಮಿನಬಾವಿ",
+                    adminBadge: "ಸಿಸ್ಟಮ್ ಅಡ್ಮಿನ್",
+                    logoutText: "ನಿರ್ಗಮಿಸಿ",
+                    dashboardTitle: "ಆಡಳಿತ ಡ್ಯಾಶ್‌ಬೋರ್ಡ್",
+                    dashboardSub: "ತರಗತಿ ಪಠ್ಯಕ್ರಮ, ವಿದ್ಯಾರ್ಥಿಗಳ ಅಂಕಗಳು ಮತ್ತು ತರಗತಿ ವೇಳಾಪಟ್ಟಿಗಳನ್ನು ನವೀಕರಿಸಲು ಕೆಳಗಿನ ವಿಷಯದ ಗೂಗಲ್ ಶೀಟ್ ಅನ್ನು ಆಯ್ಕೆಮಾಡಿ.",
+                    setupTip: "<strong>ಸ್ಥಾಪನೆ ಸಲಹೆ:</strong> ಬಳಕೆದಾರರು ಮತ್ತು ನಿರ್ವಾಹಕರು ಇಬ್ಬರೂ ಶೀಟ್‌ಗಳನ್ನು ನೇರವಾಗಿ ಸಂಪಾದಿಸಲು, ಪ್ರತಿ ಗೂಗಲ್ ಶೀಟ್‌ನ ಸಾಮಾನ್ಯ ಪ್ರವೇಶವನ್ನು <strong>\"ಲಿಂಕ್ ಹೊಂದಿರುವ ಯಾರಾದರೂ: ಸಂಪಾದಕರು\"</strong> ಎಂದು ಹೊಂದಿಸಲಾಗಿದೆಯೇ ಎಂದು ಖಚಿತಪಡಿಸಿಕೊಳ್ಳಿ.",
+                    statsTeachers: "ಲಾಗಿನ್ ಆದ ಶಿಕ್ಷಕರು",
+                    statsCompleted: "ಪೂರ್ಣಗೊಂಡಿದೆ",
+                    statsPending: "ಪೂರ್ಣಗೊಂಡಿಲ್ಲ",
+                    titleKannada: "ಕನ್ನಡ",
+                    titleEnglish: "ಇಂಗ್ಲಿಷ್",
+                    titleMaths: "ಗಣಿತ",
+                    descConnected: "ಗೂಗಲ್ ಶೀಟ್ ಸಂಪರ್ಕಿಸಲಾಗಿದೆ",
+                    btnOpenSheet: "ಶೀಟ್ ತೆರೆಯಿರಿ",
+                    btnAddLink: "ಶೀಟ್ ಲಿಂಕ್ ಸೇರಿಸಿ",
+                    kannadaSubmissions: "ಕನ್ನಡ ಸಲ್ಲಿಕೆಗಳು",
+                    englishSubmissions: "ಇಂಗ್ಲಿಷ್ ಸಲ್ಲಿಕೆಗಳು",
+                    mathsSubmissions: "ಗಣಿತ ಸಲ್ಲಿಕೆಗಳು",
+                    noSubmissions: "ಇನ್ನೂ ಯಾವುದೇ ಸಲ್ಲಿಕೆಗಳು ಬಂದಿಲ್ಲ.",
+                    viewerBack: "ಹಿಂದಕ್ಕೆ",
+                    viewerReload: "ಮರುಲೋಡ್ ಮಾಡಿ",
+                    viewerExternal: "ಗೂಗಲ್ ಶೀಟ್ಸ್‌ನಲ್ಲಿ ತೆರೆಯಿರಿ",
+                    viewExcel: "ಎಕ್ಸೆಲ್ ವೀಕ್ಷಿಸಿ ↗",
+                    noUrl: "ಲಿಂಕ್ ಇಲ್ಲ",
+                    downloadTooltip: "ಸಲ್ಲಿಕೆಗಳ CSV ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ",
+                    deleteTooltip: "ಸಲ್ಲಿಕೆಯನ್ನು ಅಳಿಸಿ",
+                    confirmDelete: "ಈ ಸಲ್ಲಿಕೆಯನ್ನು ಅಳಿಸಲು ನೀವು ಖಚಿತವಾಗಿ ಬಯಸುವಿರಾ?",
+                    deleteSuccess: "ಸಲ್ಲಿಕೆಯನ್ನು ಯಶಸ್ವಿಯಾಗಿ ಅಳಿಸಲಾಗಿದೆ.",
+                    deleteFailed: "ಸಲ್ಲಿಕೆಯನ್ನು ಅಳಿಸಲು ವಿಫಲವಾಗಿದೆ.",
+                    addUserText: "ಬಳಕೆದಾರರನ್ನು ಸೇರಿಸಿ",
+                    promptAddUserEmail: "ಹೊಸ ಶಿಕ್ಷಕರ ಇಮೇಲ್ ನಮೂದಿಸಿ:",
+                    promptAddUserName: "ಹೊಸ ಶಿಕ್ಷಕರ ಹೆಸರು ನಮೂದಿಸಿ (ಉದಾಹರಣೆಗೆ: ರಮೇಶ್):",
+                    promptAddUserPassword: "ಹೊಸ ಶಿಕ್ಷಕರ ಗುಪ್ತಪದವನ್ನು ನಮೂದಿಸಿ (ಕನಿಷ್ಠ 6 ಅಕ್ಷರಗಳು):",
+                    addUserSuccess: "ಬಳಕೆದಾರರನ್ನು ಯಶಸ್ವಿಯಾಗಿ ಸೇರಿಸಲಾಗಿದೆ!",
+                    addUserFailed: "ಬಳಕೆದಾರರನ್ನು ಸೇರಿಸಲು ವಿಫಲವಾಗಿದೆ.",
+                    addUserExists: "ಬಳಕೆದಾರರು ಈಗಾಗಲೇ ಅಸ್ತಿತ್ವದಲ್ಲಿದ್ದಾರೆ.",
+                    userManagementTitle: "ನೊಂದಾಯಿತ ಶಿಕ್ಷಕರು",
+                    deleteUserConfirm: "ಈ ಶಿಕ್ಷಕರ ಖಾತೆಯನ್ನು ಅಳಿಸಲು ನೀವು ಖಚಿತವಾಗಿ ಬಯಸುವಿರಾ?",
+                    deleteUserSuccess: "ಶಿಕ್ಷಕರ ಖಾತೆಯನ್ನು ಯಶಸ್ವಿಯಾಗಿ ಅಳಿಸಲಾಗಿದೆ.",
+                    deleteUserFailed: "ಶಿಕ್ಷಕರ ಖಾತೆಯನ್ನು ಅಳಿಸಲು ವಿಫಲವಾಗಿದೆ.",
+                    noUsersRegistered: "ಇನ್ನೂ ಯಾವುದೇ ಶಿಕ್ಷಕರು ನೊಂದಾಯಿಸಲ್ಪಟ್ಟಿಲ್ಲ.",
+                    passwordLabel: "ಗುಪ್ತಪದ:",
+                    showPasswordLabel: "ತೋರಿಸು",
+                    hidePasswordLabel: "ಮರೆಮಾಡು",
+                    deleteUserTooltip: "ಶಿಕ್ಷಕರನ್ನು ಅಳಿಸಿ"
+                }
+            };
+
+            let currentLang = 'en';
+            const langToggleBtn = document.getElementById('lang-toggle-btn');
+            const langBtnText = document.getElementById('lang-btn-text');
+
+            const applyTranslations = () => {
+                const data = translations[currentLang];
+                
+                // Header
+                document.getElementById('brand-name').textContent = data.brandName;
+                document.getElementById('admin-badge').textContent = data.adminBadge;
+                document.getElementById('logout-btn-text').textContent = data.logoutText;
+                
+                const addUsrText = document.getElementById('add-user-btn-text');
+                if (addUsrText) addUsrText.textContent = data.addUserText;
+                
+                // Dashboard Title & Tips
+                document.getElementById('dashboard-title').textContent = data.dashboardTitle;
+                document.getElementById('dashboard-subtitle').textContent = data.dashboardSub;
+                document.getElementById('setup-tip-text').innerHTML = data.setupTip;
+                
+                // Stats labels
+                document.getElementById('stats-teachers-label').textContent = data.statsTeachers;
+                document.getElementById('stats-completed-label').textContent = data.statsCompleted;
+                document.getElementById('stats-pending-label').textContent = data.statsPending;
+                
+                const regLabel = document.getElementById('stats-registered-label');
+                if (regLabel) regLabel.textContent = data.userManagementTitle;
+                
+                // Subject cards static texts
+                const titleKan = document.querySelector('#card-kannada .card-title');
+                if (titleKan) titleKan.textContent = data.titleKannada;
+                const descKan = document.querySelector('#card-kannada .card-desc');
+                if (descKan) descKan.textContent = data.descConnected;
+                const openKan = document.querySelector('#open-kannada-btn span');
+                if (openKan) openKan.textContent = data.btnOpenSheet;
+                const addKan = document.querySelector('#add-kannada-link-btn span');
+                if (addKan) addKan.textContent = data.btnAddLink;
+
+                const titleEng = document.querySelector('#card-english .card-title');
+                if (titleEng) titleEng.textContent = data.titleEnglish;
+                const descEng = document.querySelector('#card-english .card-desc');
+                if (descEng) descEng.textContent = data.descConnected;
+                const openEng = document.querySelector('#open-english-btn span');
+                if (openEng) openEng.textContent = data.btnOpenSheet;
+                const addEng = document.querySelector('#add-english-link-btn span');
+                if (addEng) addEng.textContent = data.btnAddLink;
+
+                const titleMat = document.querySelector('#card-maths .card-title');
+                if (titleMat) titleMat.textContent = data.titleMaths;
+                const descMat = document.querySelector('#card-maths .card-desc');
+                if (descMat) descMat.textContent = data.descConnected;
+                const openMat = document.querySelector('#open-maths-btn span');
+                if (openMat) openMat.textContent = data.btnOpenSheet;
+                const addMat = document.querySelector('#add-maths-link-btn span');
+                if (addMat) addMat.textContent = data.btnAddLink;
+
+                // Submissions panel headings
+                document.getElementById('submissions-kannada-title').textContent = data.kannadaSubmissions;
+                document.getElementById('submissions-english-title').textContent = data.englishSubmissions;
+                document.getElementById('submissions-maths-title').textContent = data.mathsSubmissions;
+
+                // User Management Heading
+                const userMgmtTitle = document.getElementById('user-management-title');
+                if (userMgmtTitle) userMgmtTitle.textContent = data.userManagementTitle;
+
+                const dlKan = document.getElementById('download-kannada-btn');
+                if (dlKan) dlKan.setAttribute('title', data.downloadTooltip);
+                const dlEng = document.getElementById('download-english-btn');
+                if (dlEng) dlEng.setAttribute('title', data.downloadTooltip);
+                const dlMat = document.getElementById('download-maths-btn');
+                if (dlMat) dlMat.setAttribute('title', data.downloadTooltip);
+
+                // Sheet viewer controls
+                const viewerBackText = document.querySelector('#viewer-back-btn span');
+                if (viewerBackText) viewerBackText.textContent = data.viewerBack;
+                const viewerReloadText = document.querySelector('#viewer-reload-btn span');
+                if (viewerReloadText) viewerReloadText.textContent = data.viewerReload;
+                const viewerExternalText = document.querySelector('#viewer-external-btn span');
+                if (viewerExternalText) viewerExternalText.textContent = data.viewerExternal;
+
+                // Toggle language button label
+                langBtnText.textContent = currentLang === 'en' ? 'ಕನ್ನಡ' : 'English';
+                langToggleBtn.setAttribute('aria-label', currentLang === 'en' ? 'Switch Language to Kannada' : 'Switch Language to English');
+            };
+
+            langToggleBtn.addEventListener('click', () => {
+                currentLang = currentLang === 'en' ? 'kn' : 'en';
+                applyTranslations();
+                updateDashboardStats(); // Refresh submissions lists so that empty status renders in the correct language!
+            });
+
+            // Subject Cards (containers)
+            const cardKan = document.getElementById('card-kannada');
+            const cardEng = document.getElementById('card-english');
+            const cardMat = document.getElementById('card-maths');
+
+            // Default Placeholders
+            const defaultUrls = {
+                kannada: 'https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit?usp=sharing',
+                english: 'https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit?usp=sharing',
+                maths: 'https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit?usp=sharing'
+            };
+
+            // Holds the loaded settings
+            let serverUrls = {};
+
+            // Function to save all URLs to the server
+            const saveUrlsToServer = () => {
+                const gatherLinksForSubject = (subjectKey) => {
+                    const list = document.getElementById(`${subjectKey}-links-list`);
+                    const rows = list.querySelectorAll('.link-editor-row');
+                    const links = [];
+                    rows.forEach(row => {
+                        const name = row.querySelector('.link-label').value.trim();
+                        const url = row.querySelector('.link-url').value.trim();
+                        if (url) {
+                            links.push({ name: name || 'Syllabus Sheet', url });
+                        }
+                    });
+                    return links;
+                };
+
+                const data = {
+                    kannada: gatherLinksForSubject('kannada'),
+                    english: gatherLinksForSubject('english'),
+                    maths: gatherLinksForSubject('maths')
+                };
+
+                serverUrls = data; // update local cache
+
+                fetch(getApiUrl('/api/settings'), {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                })
+                    .then(res => res.json())
+                    .catch(err => console.error('Error saving settings to server:', err));
+            };
+
+            // Debounced save helper
+            let saveTimeout;
+            const triggerSave = () => {
+                clearTimeout(saveTimeout);
+                saveTimeout = setTimeout(saveUrlsToServer, 500);
+            };
+
+            // Dynamic links renderer
+            const renderSubjectLinks = (subjectKey, linksArray) => {
+                const container = document.getElementById(`${subjectKey}-links-list`);
+                if (!container) return;
+
+                container.innerHTML = '';
+
+                linksArray.forEach(link => {
+                    const row = document.createElement('div');
+                    row.className = 'link-editor-row';
+                    row.style.display = 'flex';
+                    row.style.gap = '8px';
+                    row.style.alignItems = 'center';
+                    row.style.marginBottom = '6px';
+                    row.style.width = '100%';
+
+                    row.innerHTML = `
+                        <input 
+                            type="text" 
+                            placeholder="Name (e.g. Class 5)" 
+                            class="form-input link-label" 
+                            value="${link.name}" 
+                            style="padding: 0 8px; height: 32px; font-size: 12px; flex: 1; border: 1.5px solid var(--clr-border); border-radius: 6px;"
+                        >
+                        <input 
+                            type="text" 
+                            placeholder="Google Sheet URL" 
+                            class="form-input link-url" 
+                            value="${link.url}" 
+                            style="padding: 0 8px; height: 32px; font-size: 12px; flex: 2; border: 1.5px solid var(--clr-border); border-radius: 6px;"
+                        >
+                        <button 
+                            type="button" 
+                            class="btn-delete-link" 
+                            style="background: none; border: none; color: #ef4444; cursor: pointer; padding: 4px; display: flex; align-items: center;"
+                            title="Delete link"
+                        >
+                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="3 6 5 6 21 6"></polyline>
+                                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                            </svg>
+                        </button>
+                    `;
+
+                    row.querySelector('.link-label').addEventListener('input', triggerSave);
+                    row.querySelector('.link-url').addEventListener('input', triggerSave);
+                    row.querySelector('.btn-delete-link').addEventListener('click', () => {
+                        row.remove();
+                        saveUrlsToServer();
+                    });
+
+                    container.appendChild(row);
+                });
+            };
+
+            const setupAddLinkButton = (subjectKey) => {
+                const btn = document.getElementById(`add-${subjectKey}-link-btn`);
+                if (!btn) return;
+
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation(); // prevent card click opening sheet
+                    const container = document.getElementById(`${subjectKey}-links-list`);
+                    if (!container) return;
+
+                    const row = document.createElement('div');
+                    row.className = 'link-editor-row';
+                    row.style.display = 'flex';
+                    row.style.gap = '8px';
+                    row.style.alignItems = 'center';
+                    row.style.marginBottom = '6px';
+                    row.style.width = '100%';
+
+                    row.innerHTML = `
+                        <input 
+                            type="text" 
+                            placeholder="Name (e.g. Class 5)" 
+                            class="form-input link-label" 
+                            value="" 
+                            style="padding: 0 8px; height: 32px; font-size: 12px; flex: 1; border: 1.5px solid var(--clr-border); border-radius: 6px;"
+                        >
+                        <input 
+                            type="text" 
+                            placeholder="Google Sheet URL" 
+                            class="form-input link-url" 
+                            value="" 
+                            style="padding: 0 8px; height: 32px; font-size: 12px; flex: 2; border: 1.5px solid var(--clr-border); border-radius: 6px;"
+                        >
+                        <button 
+                            type="button" 
+                            class="btn-delete-link" 
+                            style="background: none; border: none; color: #ef4444; cursor: pointer; padding: 4px; display: flex; align-items: center;"
+                            title="Delete link"
+                        >
+                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="3 6 5 6 21 6"></polyline>
+                                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                            </svg>
+                        </button>
+                    `;
+
+                    row.querySelector('.link-label').addEventListener('input', triggerSave);
+                    row.querySelector('.link-url').addEventListener('input', triggerSave);
+                    row.querySelector('.btn-delete-link').addEventListener('click', () => {
+                        row.remove();
+                        saveUrlsToServer();
+                    });
+
+                    container.appendChild(row);
+                    saveUrlsToServer();
+                });
+            };
+
+            setupAddLinkButton('kannada');
+            setupAddLinkButton('english');
+            setupAddLinkButton('maths');
+
+            const parseSubjectUrls = (value, defaultUrl) => {
+                if (Array.isArray(value)) {
+                    return value;
+                }
+                if (typeof value === 'string' && value.trim() !== '') {
+                    return [{ name: 'Default Sheet', url: value }];
+                }
+                return [{ name: 'Default Sheet', url: defaultUrl }];
+            };
+
+            // 1. Fetch URLs from server on load
+            fetch(getApiUrl('/api/settings'))
+                .then(res => res.json())
+                .then(data => {
+                    const kanLinks = parseSubjectUrls(data.kannada, defaultUrls.kannada);
+                    const engLinks = parseSubjectUrls(data.english, defaultUrls.english);
+                    const matLinks = parseSubjectUrls(data.maths, defaultUrls.maths);
+
+                    serverUrls = {
+                        kannada: kanLinks,
+                        english: engLinks,
+                        maths: matLinks
+                    };
+
+                    renderSubjectLinks('kannada', kanLinks);
+                    renderSubjectLinks('english', engLinks);
+                    renderSubjectLinks('maths', matLinks);
+                })
+                .catch(err => {
+                    console.error('Error loading settings from server, falling back to local defaults:', err);
+                    const kanLinks = [{ name: 'Default Sheet', url: defaultUrls.kannada }];
+                    const engLinks = [{ name: 'Default Sheet', url: defaultUrls.english }];
+                    const matLinks = [{ name: 'Default Sheet', url: defaultUrls.maths }];
+
+                    serverUrls = {
+                        kannada: kanLinks,
+                        english: engLinks,
+                        maths: matLinks
+                    };
+
+                    renderSubjectLinks('kannada', kanLinks);
+                    renderSubjectLinks('english', engLinks);
+                    renderSubjectLinks('maths', matLinks);
+                });
+
+            // Inline Viewer DOM elements
+            const gridSection = document.querySelector('.admin-grid');
+            const viewerContainer = document.getElementById('sheet-viewer-container');
+            const viewerTitle = document.getElementById('viewer-title');
+            const viewerIframe = document.getElementById('sheet-iframe');
+            const viewerBackBtn = document.getElementById('viewer-back-btn');
+            const viewerReloadBtn = document.getElementById('viewer-reload-btn');
+            const viewerExternalBtn = document.getElementById('viewer-external-btn');
+
+            let activeUrl = '';
+
+            // Clean Google Sheet URL for iframe embedding
+            const getEmbedUrl = (url) => {
+                if (!url) return '';
+                try {
+                    if (url.includes('docs.google.com/spreadsheets')) {
+                        const urlObj = new URL(url);
+                        // Convert non-editable paths (like /pubhtml, /preview) to /edit
+                        if (urlObj.pathname.includes('/d/')) {
+                            const parts = urlObj.pathname.split('/d/');
+                            const id = parts[1].split('/')[0];
+                            urlObj.pathname = `/spreadsheets/d/${id}/edit`;
+                        }
+                        // Force rm=minimal to hide menu bar for clean display, but preserve other params like gid
+                        urlObj.searchParams.set('rm', 'minimal');
+                        return urlObj.toString();
+                    }
+                } catch (e) {
+                    console.error('Invalid URL passed to getEmbedUrl:', e);
+                }
+                return url;
+            };
+
+            const showSheet = (subjectKey, subjectName) => {
+                const sheets = serverUrls[subjectKey] || [];
+                if (!Array.isArray(sheets) || sheets.length === 0) {
+                    alert('No Google Sheets configured for this subject.');
+                    return;
+                }
+
+                const selectEl = document.getElementById('viewer-sheet-select');
+                if (sheets.length > 1) {
+                    selectEl.style.display = 'inline-block';
+                    selectEl.innerHTML = sheets.map((sheet, index) => `<option value="${index}">${sheet.name}</option>`).join('');
+                    selectEl.value = '0';
+
+                    // Bind change listener
+                    selectEl.onchange = (e) => {
+                        const selectedIndex = e.target.value;
+                        const selectedSheet = sheets[selectedIndex];
+                        if (selectedSheet) {
+                            activeUrl = selectedSheet.url;
+                            viewerIframe.src = getEmbedUrl(selectedSheet.url);
+                            viewerExternalBtn.href = selectedSheet.url;
+                        }
+                    };
+                } else {
+                    selectEl.style.display = 'none';
+                }
+
+                // Load the first sheet by default
+                const firstSheet = sheets[0];
+                activeUrl = firstSheet.url;
+
+                if (sheets.length === 1) {
+                    viewerTitle.textContent = `${subjectName} Subject Sheet`;
+                } else {
+                    viewerTitle.textContent = `${subjectName} - `;
+                }
+
+                viewerIframe.src = getEmbedUrl(firstSheet.url);
+                viewerExternalBtn.href = firstSheet.url;
+
+                // Hide grid, show viewer
+                gridSection.style.display = 'none';
+                viewerContainer.style.display = 'flex';
+            };
+
+            const hideSheet = () => {
+                viewerIframe.src = '';
+                viewerContainer.style.display = 'none';
+                gridSection.style.display = 'grid';
+            };
+
+            viewerBackBtn.addEventListener('click', hideSheet);
+
+            viewerReloadBtn.addEventListener('click', () => {
+                if (activeUrl) {
+                    viewerIframe.src = getEmbedUrl(activeUrl);
+                }
+            });
+
+            // 3. Bind click events on the subject card containers
+            const bindCardClick = (cardElement, subjectKey, subjectName) => {
+                cardElement.addEventListener('click', (e) => {
+                    // Prevent opening sheet if clicking on input boxes, buttons, or links inside the card
+                    if (e.target.closest('.link-editor-row') || e.target.closest('.btn-add-link')) {
+                        return;
+                    }
+                    showSheet(subjectKey, subjectName);
+                });
+            };
+
+            bindCardClick(cardKan, 'kannada', 'Kannada');
+            bindCardClick(cardEng, 'english', 'English');
+            bindCardClick(cardMat, 'maths', 'Maths');
+
+            // CSV Downloader
+            const downloadSubmissionsCSV = (subjectKey) => {
+                fetch(getApiUrl('/api/stats'))
+                    .then(res => res.json())
+                    .then(data => {
+                        if (!data.submissions) return;
+                        const filtered = data.submissions
+                            .filter(sub => sub && typeof sub === 'object' && sub.subject === subjectKey)
+                            .sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+                        
+                        if (filtered.length === 0) {
+                            alert(currentLang === 'en' ? 'No submissions to download.' : 'ಡೌನ್‌ಲೋಡ್ ಮಾಡಲು ಯಾವುದೇ ಸಲ್ಲಿಕೆಗಳಿಲ್ಲ.');
+                            return;
+                        }
+
+                        const headers = ['Teacher / User', 'Submission Time', 'Google Sheet URL'];
+                        const rows = filtered.map(sub => [
+                            `"${sub.teacher.replace(/"/g, '""')}"`,
+                            `"${new Date(sub.timestamp).toLocaleString().replace(/"/g, '""')}"`,
+                            `"${(sub.sheetUrl || '').replace(/"/g, '""')}"`
+                        ]);
+                        
+                        const csvContent = "\uFEFF" + [headers.join(','), ...rows.map(e => e.join(','))].join('\n');
+                        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                        const url = URL.createObjectURL(blob);
+                        const link = document.createElement("a");
+                        link.setAttribute("href", url);
+                        link.setAttribute("download", `${subjectKey}_submissions_${new Date().toISOString().slice(0, 10)}.csv`);
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                    })
+                    .catch(err => {
+                        console.error('Error downloading CSV:', err);
+                        alert(currentLang === 'en' ? 'Failed to download submissions.' : 'ಸಲ್ಲಿಕೆಗಳನ್ನು ಡೌನ್‌ಲೋಡ್ ಮಾಡಲು ವಿಫಲವಾಗಿದೆ.');
+                    });
+            };
+
+            // Setup download click handlers
+            const setupDownloadButton = (subjectKey) => {
+                const btn = document.getElementById(`download-${subjectKey}-btn`);
+                if (btn) {
+                    btn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        downloadSubmissionsCSV(subjectKey);
+                    });
+                }
+            };
+            setupDownloadButton('kannada');
+            setupDownloadButton('english');
+            setupDownloadButton('maths');
+
+            // Delete submission handler
+            const deleteSubmission = (teacher, subject, sheetUrl) => {
+                const confirmMsg = translations[currentLang].confirmDelete;
+                if (!confirm(confirmMsg)) return;
+
+                fetch(getApiUrl('/api/delete-submission'), {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ teacher, subject, sheetUrl })
+                })
+                .then(res => res.json())
+                .then(resData => {
+                    if (resData.success) {
+                        alert(translations[currentLang].deleteSuccess);
+                        updateDashboardStats();
+                    } else {
+                        alert(translations[currentLang].deleteFailed);
+                    }
+                })
+                .catch(err => {
+                    console.error('Error deleting submission:', err);
+                    alert(translations[currentLang].deleteFailed);
+                });
+            };
+
+            // Expose globally for inline onclick
+            window.deleteSubmissionFromUI = (teacherEscaped, subjectEscaped, urlEscaped) => {
+                const teacher = decodeURIComponent(teacherEscaped);
+                const subject = decodeURIComponent(subjectEscaped);
+                const sheetUrl = decodeURIComponent(urlEscaped);
+                deleteSubmission(teacher, subject, sheetUrl);
+            };
+
+            // Fetch and update dashboard stats dynamically
+            const updateDashboardStats = () => {
+                fetch(getApiUrl('/api/stats'))
+                    .then(res => res.json())
+                    .then(data => {
+                        window.latestStatsData = data;
+                        const loggedElement = document.getElementById('logged-teachers-count');
+                        const completedElement = document.getElementById('completed-tasks-count');
+                        const pendingElement = document.getElementById('not-completed-tasks-count');
+
+                        if (loggedElement && data.activeTeachers !== undefined) {
+                            loggedElement.textContent = data.activeTeachers;
+                        }
+                        if (completedElement && data.completedTasks !== undefined) {
+                            completedElement.textContent = data.completedTasks;
+                        }
+                        if (pendingElement && data.notCompletedTasks !== undefined) {
+                            pendingElement.textContent = data.notCompletedTasks;
+                        }
+
+                        const regElement = document.getElementById('registered-teachers-count');
+                        if (regElement && data.users !== undefined) {
+                            regElement.textContent = data.users.length;
+                        }
+
+                        // Populate submissions lists subject-wise
+                        if (data.submissions) {
+                            const sorted = [...data.submissions]
+                                .filter(sub => sub && typeof sub === 'object' && sub.teacher)
+                                .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+                            const subjects = ['kannada', 'english', 'maths'];
+
+                            subjects.forEach(subjectKey => {
+                                const listContainer = document.getElementById(`${subjectKey}-submissions-list`);
+                                if (!listContainer) return;
+
+                                const filtered = sorted.filter(sub => sub.subject === subjectKey);
+
+                                if (filtered.length === 0) {
+                                    listContainer.innerHTML = `<div class="submission-empty">${translations[currentLang].noSubmissions}</div>`;
+                                } else {
+                                    listContainer.innerHTML = filtered.map(sub => {
+                                        const formattedDate = new Date(sub.timestamp).toLocaleString();
+                                        const linkHtml = sub.sheetUrl
+                                            ? `<a class="submission-link" href="${sub.sheetUrl}" target="_blank">${translations[currentLang].viewExcel}</a>`
+                                            : `<span style="color: var(--clr-text-light); font-style: italic;">${translations[currentLang].noUrl}</span>`;
+                                        
+                                        const teacherEscaped = encodeURIComponent(sub.teacher);
+                                        const subjectEscaped = encodeURIComponent(sub.subject);
+                                        const urlEscaped = encodeURIComponent(sub.sheetUrl || '');
+
+                                        return `
+                                            <div class="submission-item">
+                                                <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 8px;">
+                                                    <span class="submission-teacher" title="${sub.teacher}">${sub.teacher}</span>
+                                                    <button class="btn-delete-submission" onclick="deleteSubmissionFromUI('${teacherEscaped}', '${subjectEscaped}', '${urlEscaped}')" title="${translations[currentLang].deleteTooltip || 'Delete Submission'}" style="background: none; border: none; color: #ef4444; cursor: pointer; padding: 4px; display: inline-flex; align-items: center; border-radius: 4px; transition: all 0.2s;">
+                                                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                                            <polyline points="3 6 5 6 21 6"></polyline>
+                                                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                                        </svg>
+                                                    </button>
+                                                </div>
+                                                <div class="submission-meta">
+                                                    <span class="submission-time">${formattedDate}</span>
+                                                    ${linkHtml}
+                                                </div>
+                                            </div>
+                                        `;
+                                    }).join('');
+                                }
+                            });
+                        }
+
+                    })
+                    .catch(err => console.error('Error fetching dashboard stats:', err));
+            };
+
+
+
+            // Call immediately and then poll every 3 seconds
+            updateDashboardStats();
+            setInterval(updateDashboardStats, 3000);
+
+            // Add User click handler
+            const addUserBtn = document.getElementById('add-user-btn');
+            if (addUserBtn) {
+                addUserBtn.addEventListener('click', () => {
+                    const data = translations[currentLang];
+                    const email = prompt(data.promptAddUserEmail);
+                    if (!email) return;
+
+                    // Simple email format check
+                    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    if (!emailPattern.test(email)) {
+                        alert(currentLang === 'en' ? 'Invalid email format!' : 'ಅಮಾನ್ಯ ಇಮೇಲ್ ವಿನ್ಯಾಸ!');
+                        return;
+                    }
+
+                    const name = prompt(data.promptAddUserName);
+                    if (!name) return;
+
+                    const password = prompt(data.promptAddUserPassword);
+                    if (!password) return;
+                    if (password.length < 6) {
+                        alert(currentLang === 'en' ? 'Password must be at least 6 characters!' : 'ಗುಪ್ತಪದವು ಕನಿಷ್ಠ 6 ಅಕ್ಷರಗಳಾಗಿರಬೇಕು!');
+                        return;
+                    }
+
+                    fetch(getApiUrl('/api/add-user'), {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ email, name, password })
+                    })
+                    .then(res => {
+                        if (res.status === 409) {
+                            alert(data.addUserExists);
+                            return null;
+                        }
+                        if (!res.ok) {
+                            throw new Error('Failed to add user');
+                        }
+                        return res.json();
+                    })
+                    .then(resData => {
+                        if (resData && resData.success) {
+                            alert(data.addUserSuccess);
+                            updateDashboardStats();
+                        }
+                    })
+                    .catch(err => {
+                        console.error('Error adding user:', err);
+                        alert(data.addUserFailed);
+                    });
+                });
+            }
+
+            // Logout Navigation
+            logoutBtn.addEventListener('click', () => {
+                window.location.href = 'index.html';
+            });
+
+            // Navigate to users.html when registered users stats card is clicked
+            const regCard = document.getElementById('registered-users-card');
+            if (regCard) {
+                regCard.addEventListener('click', () => {
+                    window.location.href = 'users.html';
+                });
+            }
+
+            // Stats modal triggers
+            const modalOverlay = document.getElementById('stats-modal');
+            const modalTitle = document.getElementById('modal-title');
+            const modalBody = document.getElementById('modal-body');
+            const closeModalBtn = document.getElementById('close-modal-btn');
+
+            const closeModal = () => {
+                if (modalOverlay) modalOverlay.classList.remove('active');
+            };
+
+            if (closeModalBtn) {
+                closeModalBtn.addEventListener('click', closeModal);
+            }
+            if (modalOverlay) {
+                modalOverlay.addEventListener('click', (e) => {
+                    if (e.target === modalOverlay) closeModal();
+                });
+            }
+
+            // Logged-in Teachers card click handler
+            const loggedCard = document.getElementById('logged-teachers-card');
+            if (loggedCard) {
+                loggedCard.addEventListener('click', () => {
+                    const data = window.latestStatsData;
+                    if (!data) return;
+
+                    modalTitle.textContent = currentLang === 'en' ? 'Logged-in Teachers' : 'ಲಾಗಿನ್ ಆದ ಶಿಕ್ಷಕರು';
+                    
+                    const activeList = data.activeTeachersList || [];
+                    if (activeList.length === 0) {
+                        modalBody.innerHTML = `<div style="text-align: center; padding: 24px; color: var(--clr-text-light); font-weight: 600;">${currentLang === 'en' ? 'No teachers currently online.' : 'ಯಾವ ಶಿಕ್ಷಕರು ಆನ್‌ಲೈನ್‌ನಲ್ಲಿ ಇಲ್ಲ.'}</div>`;
+                    } else {
+                        modalBody.innerHTML = activeList.map(t => {
+                            let displayName = t.name;
+                            if (t.name.startsWith('teacher_')) {
+                                displayName = (currentLang === 'en' ? 'Guest Teacher' : 'ಅತಿಥಿ ಶಿಕ್ಷಕರು') + ` (${t.name.split('_')[1]})`;
+                            }
+                            return `
+                                <div class="modal-body-item">
+                                    <div style="display: flex; align-items: center; gap: 8px;">
+                                        <span style="width: 8px; height: 8px; border-radius: 50%; background-color: #2e7d32; display: inline-block;"></span>
+                                        <span style="font-weight: 700; color: var(--clr-text-main); font-size: 14px;">${displayName}</span>
+                                    </div>
+                                    <span style="font-size: 12px; color: var(--clr-text-muted);">${t.email}</span>
+                                </div>
+                            `;
+                        }).join('');
+                    }
+                    modalOverlay.classList.add('active');
+                });
+            }
+
+            // Completed tasks card click handler
+            const completedCard = document.getElementById('completed-tasks-card');
+            if (completedCard) {
+                completedCard.addEventListener('click', () => {
+                    const data = window.latestStatsData;
+                    if (!data) return;
+
+                    modalTitle.textContent = currentLang === 'en' ? 'Completed Teachers (Today)' : 'ಪೂರ್ಣಗೊಳಿಸಿದ ಶಿಕ್ಷಕರು (ಇಂದು)';
+
+                    const registeredUsers = (data.users || []).filter(u => u.name.toLowerCase() !== 'admin' && u.email.toLowerCase() !== 'admin');
+                    const submissions = data.submissions || [];
+                    const todayPrefix = new Date().toISOString().split('T')[0];
+
+                    const completedList = [];
+
+                    registeredUsers.forEach(user => {
+                        const hasSubmittedToday = submissions.some(s => 
+                            s.teacher.toLowerCase() === user.name.toLowerCase() && 
+                            s.timestamp && s.timestamp.startsWith(todayPrefix)
+                        );
+
+                        if (hasSubmittedToday) {
+                            completedList.push({
+                                name: user.name,
+                                email: user.email
+                            });
+                        }
+                    });
+
+                    if (completedList.length === 0) {
+                        modalBody.innerHTML = `<div style="text-align: center; padding: 24px; color: var(--clr-text-light); font-weight: 600;">${currentLang === 'en' ? 'No teachers have completed today.' : 'ಇಂದು ಯಾವುದೇ ಶಿಕ್ಷಕರು ಪೂರ್ಣಗೊಳಿಸಿಲ್ಲ.'}</div>`;
+                    } else {
+                        modalBody.innerHTML = completedList.map(t => {
+                            return `
+                                <div class="modal-body-item" style="flex-direction: column; align-items: flex-start; gap: 6px; padding: 14px 10px;">
+                                    <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                                        <div style="display: flex; align-items: center; gap: 8px;">
+                                            <span style="width: 8px; height: 8px; border-radius: 50%; background-color: #2e7d32; display: inline-block;"></span>
+                                            <span style="font-weight: 700; color: var(--clr-text-main); font-size: 14px;">${t.name}</span>
+                                        </div>
+                                        <span style="font-size: 12px; color: var(--clr-text-light);">${t.email}</span>
+                                    </div>
+                                </div>
+                            `;
+                        }).join('');
+                    }
+                    modalOverlay.classList.add('active');
+                });
+            }
+
+            // Not Completed card click handler
+            const notCompletedCard = document.getElementById('not-completed-tasks-card');
+            if (notCompletedCard) {
+                notCompletedCard.addEventListener('click', () => {
+                    const data = window.latestStatsData;
+                    if (!data) return;
+
+                    modalTitle.textContent = currentLang === 'en' ? 'Not Completed Teachers (Today)' : 'ಅಪೂರ್ಣ ಶಿಕ್ಷಕರು (ಇಂದು)';
+
+                    const registeredUsers = (data.users || []).filter(u => u.name.toLowerCase() !== 'admin' && u.email.toLowerCase() !== 'admin');
+                    const submissions = data.submissions || [];
+                    const todayPrefix = new Date().toISOString().split('T')[0];
+
+                    const notCompletedList = [];
+
+                    registeredUsers.forEach(user => {
+                        const hasSubmittedToday = submissions.some(s => 
+                            s.teacher.toLowerCase() === user.name.toLowerCase() && 
+                            s.timestamp && s.timestamp.startsWith(todayPrefix)
+                        );
+
+                        if (!hasSubmittedToday) {
+                            notCompletedList.push({
+                                name: user.name,
+                                email: user.email
+                            });
+                        }
+                    });
+
+                    if (notCompletedList.length === 0) {
+                        modalBody.innerHTML = `<div style="text-align: center; padding: 24px; color: #2e7d32; font-weight: 700;">🎉 ${currentLang === 'en' ? 'All teachers have completed today!' : 'ಎಲ್ಲಾ ಶಿಕ್ಷಕರು ಇಂದು ಪೂರ್ಣಗೊಳಿಸಿದ್ದಾರೆ!'}</div>`;
+                    } else {
+                        modalBody.innerHTML = notCompletedList.map(t => {
+                            return `
+                                <div class="modal-body-item" style="flex-direction: column; align-items: flex-start; gap: 6px; padding: 14px 10px;">
+                                    <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                                        <div style="display: flex; align-items: center; gap: 8px;">
+                                            <span style="width: 8px; height: 8px; border-radius: 50%; background-color: #d84315; display: inline-block;"></span>
+                                            <span style="font-weight: 700; color: var(--clr-text-main); font-size: 14px;">${t.name}</span>
+                                        </div>
+                                        <span style="font-size: 12px; color: var(--clr-text-light);">${t.email}</span>
+                                    </div>
+                                </div>
+                            `;
+                        }).join('');
+                    }
+                    modalOverlay.classList.add('active');
+                });
+            }
+        });
+    </script>
+
+    <!-- Stats Details Modal Container -->
+    <div id="stats-modal" class="modal-overlay">
+        <div style="background-color: #ffffff; border-radius: 12px; width: 90%; max-width: 440px; padding: 20px; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); position: relative; animation: modalSlide 0.25s ease;">
+            <!-- Close Button -->
+            <button id="close-modal-btn" style="position: absolute; top: 16px; right: 16px; background: none; border: none; color: var(--clr-text-light); cursor: pointer; padding: 4px; display: inline-flex; align-items: center; border-radius: 50%;">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+            <h3 id="modal-title" style="margin-top: 0; margin-bottom: 12px; font-size: 18px; font-weight: 800; color: var(--clr-text-main); border-bottom: 2px solid var(--clr-border); padding-bottom: 8px;">Stats Detail</h3>
+            <div id="modal-body" style="max-height: 320px; overflow-y: auto; display: flex; flex-direction: column;">
+                <!-- Content gets loaded here -->
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
