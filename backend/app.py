@@ -251,27 +251,19 @@ def get_stats():
     conn = get_db_connection()
     cursor = conn.cursor()
     
-    # Get users
-    cursor.execute("SELECT email, name, password FROM users")
-    users_rows = cursor.fetchall()
-    users_list = []
-    registered_teachers = set()
-    for r in users_rows:
-        users_list.append({
-            'email': r['email'],
-            'name': r['name'],
-            'password': r['password']
-        })
-        if r['name'].lower() != 'admin' and r['email'].lower() != 'admin':
-            registered_teachers.add(r['name'].lower())
+    # Get completed & pending counts
+    cursor.execute("SELECT value FROM counters WHERE key = 'completedCount'")
+    completed_row = cursor.fetchone()
+    completed = completed_row[0] if completed_row else 35
+    
+    cursor.execute("SELECT value FROM counters WHERE key = 'notCompletedCount'")
+    pending_row = cursor.fetchone()
+    not_completed = pending_row[0] if pending_row else 12
     
     # Get submissions
     cursor.execute("SELECT teacher, subject, timestamp, sheet_url FROM submissions")
     submissions_rows = cursor.fetchall()
     submissions_list = []
-    today_prefix = datetime.utcnow().isoformat()[:10]
-    daily_submitted_teachers = set()
-    
     for r in submissions_rows:
         submissions_list.append({
             'teacher': r['teacher'],
@@ -279,16 +271,17 @@ def get_stats():
             'timestamp': r['timestamp'],
             'sheetUrl': r['sheet_url']
         })
-        # Check if submission is from today
-        if r['timestamp'] and str(r['timestamp']).startswith(today_prefix):
-            daily_submitted_teachers.add(r['teacher'].lower())
-            
-    # Calculate daily completed & pending counts
-    completed = len(daily_submitted_teachers.intersection(registered_teachers))
-    not_completed = len(registered_teachers) - completed
-    if not_completed < 0:
-        not_completed = 0
-
+        
+    # Get users
+    cursor.execute("SELECT email, name, password FROM users")
+    users_rows = cursor.fetchall()
+    users_list = []
+    for r in users_rows:
+        users_list.append({
+            'email': r['email'],
+            'name': r['name'],
+            'password': r['password']
+        })
     active_teachers_list = []
     for k in active_sessions:
         if k.startswith('teacher:'):
@@ -343,11 +336,25 @@ def submit_progress():
             VALUES (?, ?, ?, ?)
         """, (teacher, subject, timestamp, sheet_url))
         
+        # Increment completedCount and decrement notCompletedCount (if > 0)
+        cursor.execute("SELECT value FROM counters WHERE key = 'completedCount'")
+        completed = cursor.fetchone()[0]
+        cursor.execute("SELECT value FROM counters WHERE key = 'notCompletedCount'")
+        pending = cursor.fetchone()[0]
+        
+        new_completed = completed + 1
+        new_pending = max(0, pending - 1)
+        
+        cursor.execute("INSERT OR REPLACE INTO counters (key, value) VALUES ('completedCount', ?)", (new_completed,))
+        cursor.execute("INSERT OR REPLACE INTO counters (key, value) VALUES ('notCompletedCount', ?)", (new_pending,))
+        
         conn.commit()
         conn.close()
         
         return jsonify({
-            'success': True
+            'success': True,
+            'completed': new_completed,
+            'notCompleted': new_pending
         })
     else:
         conn.close()
